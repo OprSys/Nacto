@@ -1,12 +1,6 @@
 import std/strutils
 import hardware/disk as NactoDisk
 
-type
-    FileType* = NactoDisk.FileTypes
-
-proc `$`*(self: NactoDisk.CoreDataObject): string =
-    if self == nil: "nil" else: self.Name
-
 proc ResolvePath*(path: string): NactoDisk.CoreDataObject =
     if path == "" or path == "/":
         return NactoDisk.get_root()
@@ -17,10 +11,7 @@ proc ResolvePath*(path: string): NactoDisk.CoreDataObject =
             components.add(part)
 
     var current: NactoDisk.CoreDataObject
-    if path[0] == '/':
-        current = NactoDisk.get_root()
-    else:
-        current = NactoDisk.get_root()
+    current = NactoDisk.get_root()
 
     for part in components:
         if part == "..":
