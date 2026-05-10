@@ -1,0 +1,29 @@
+Copyright (c) OprSys
+All rights reserved.
+
+R3 License. LIMITED PERMISSIONS.
+
+The Software is provided "as is", without warranty of any kind, express or implied,
+including but not limited to the warranties of merchantability, fitness for a
+particular purpose, and noninfringement. In no event shall the Authors be liable
+for any claim, damages, or other liability, whether in an action of contract, tort,
+or otherwise, arising from, out of, or in connection with the Software or the use
+or other dealings in the Software.
+
+DEFINITIONS
+Software - all items provided by the Authors.
+Authors - all members of OprSys that have contributed to any Software of OprSys.
+User(s) - all people receiving the Software.
+OprSys - the group founded and owned by Yisitluke.
+Yisitluke - the Internet handle, which is the creator and founder of OprSys.
+Modification - the rule of Modification, stated in "WHAT USERS ARE ALLOWED TO DO"
+Use - the rule of Use, stated in "WHAT USERS ARE ALLOWED TO DO"
+Source View - the rule of Source View, stated in "WHAT USERS ARE ALLOWED TO DO"
+Redistribution - the rule of Redistribution, stated in "WHAT USERS ARE ALLOWED TO DO"
+
+
+WHAT USERS ARE ALLOWED TO DO
+Modification - Modification of the Software is only allowed if granted direct permission by Yisitluke.
+Use - Users may use the provided or modified Software freely, with no restriction, regardless of country of residence, gender, age, sex, race, or any other physical or mental trait.
+Source View - Any User viewing the source code of the Software is fully permitted, regardless the circumstance.
+Redistribution - Redistribution of the Software or modified Software (Modification) requires direct permission by Yisitluke, regardless of intent (Use), any changes made (Modification), or why said modifications are done. The redistributed Software, modified or not, may only be redistributed if Yisitluke has granted explicit permission, and any attempt to redistribute without Yisitluke's knowledge is a violation of this license.
