@@ -33,7 +33,7 @@ Redistribution - Redistribution of the Software or modified Software (Modificati
 
 EXCEPTIONS
 This is an additional branch made for specifically Nacto, which is not included in the standard R Permissive Staging.
-Exceptions state that in under certain conditions, the standard Allowed statements may be overrided by Exceptions.
+Exceptions state that in under certain conditions, the standard Allowed statements may be overridden by Exceptions.
 
 Modification, Exceptions - null override
 Use, Exceptions - null override
