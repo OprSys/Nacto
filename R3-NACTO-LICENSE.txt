@@ -1,7 +1,7 @@
 Copyright (c) OprSys
 All rights reserved.
 
-R3 License. LIMITED PERMISSIONS.
+R3 Nacto License. CUSTOM PERMISSIONS.
 
 The Software is provided "as is", without warranty of any kind, express or implied,
 including but not limited to the warranties of merchantability, fitness for a
@@ -16,14 +16,26 @@ Authors - all members of OprSys that have contributed to any Software of OprSys.
 User(s) - all people receiving the Software.
 OprSys - the group founded and owned by Yisitluke.
 Yisitluke - the Internet handle, which is the creator and founder of OprSys.
-Modification - the rule of Modification, stated in "WHAT USERS ARE ALLOWED TO DO"
-Use - the rule of Use, stated in "WHAT USERS ARE ALLOWED TO DO"
-Source View - the rule of Source View, stated in "WHAT USERS ARE ALLOWED TO DO"
-Redistribution - the rule of Redistribution, stated in "WHAT USERS ARE ALLOWED TO DO"
+Modification - the permission granted to Users to alter the Software, limited to non-commercial settings
+Use - the unrestricted permission granted to Users to operate or run the Software, whether originally provided or modified
+Source View - the unconditional permission granted to any User to examine or read the source code of the Software
+Redistribution - the conditional permission granted by Yisitluke to a User to distribute copies of the Software to others
+Allowed - the collective set of all permissions granted to Users under the section describing their allowed actions
+Exceptions - the rule of Exceptions, stated in "EXCEPTIONS"
+null override - for a stated exception (Exceptions), means "this specific rule has no possible override from Allowed"
 
 
 WHAT USERS ARE ALLOWED TO DO
-Modification - Modification of the Software is only allowed if granted direct permission by Yisitluke.
+Modification - Users may modify the Software in non-commercial settings. Any modification for commercial intent is prohibited.
 Use - Users may use the provided or modified Software freely, with no restriction, regardless of country of residence, gender, age, sex, race, or any other physical or mental trait.
 Source View - Any User viewing the source code of the Software is fully permitted, regardless the circumstance.
 Redistribution - Redistribution of the Software or modified Software (Modification) requires direct permission by Yisitluke, regardless of intent (Use), any changes made (Modification), or why said modifications are done. The redistributed Software, modified or not, may only be redistributed if Yisitluke has granted explicit permission, and any attempt to redistribute without Yisitluke's knowledge is a violation of this license.
+
+EXCEPTIONS
+This is an additional branch made for specifically Nacto, which is not included in the standard R Permissive Staging.
+Exceptions state that in under certain conditions, the standard Allowed statements may be overrided by Exceptions.
+
+Modification, Exceptions - null override
+Use, Exceptions - null override
+Source View, Exceptions - null override
+Redistribution, Exceptions - Custom programs made in the simulated programming language, VINSTR, can be redistributed freely to use on other Nacto programs, regardless of Redistribution. If the primary codebase of Nacto is altered, then Redistribution still applies.

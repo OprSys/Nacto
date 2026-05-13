@@ -1,21 +1,22 @@
-import strutils
+import std/strutils
+import std/strformat
 
-import cpu/instr as VINSTR
 import cpu/vinstr as VINSTRS
 import process/procapi as ProcApi
 import cpu/errors/all as BINERRC
 export BINERRC
-export VINSTR
 export VINSTRS
+
+proc FatalCrash*(errtype: typedesc, reason: string, procobj: ProcApi.ProcTypes.ProcessObject): void =
+    echo(fmt"Fatal exception. {procobj.Name}:{procobj.Id} has experienced a crash that Nacto cannot recover.{'\n'}Nacto has crashed, with reason: {reason}{'\n'}{$errtype}")
+    return
 
 proc EvaluateInstr(base: string, args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): void =
     var ret: int = -1
 
-    case base
-    of $VINSTR.InstructionSet.DEBUGPROCDUMP:
-        ret = VINSTRS.debugprocdump.execute(args, procobj)
-    of $VINSTR.InstructionSet.HALT:
-        ret = VINSTRS.halt.execute(args, procobj)
+    let handler = VINSTRS.vinstr_registry.lookup(base)
+    if handler != nil:
+        ret = handler(args, procobj)
     else:
         raise newException(BINERRC.InvalidInstruction, base)
     return
@@ -65,14 +66,20 @@ proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
         inc procobj.ProcessState.ProgramCounter
     return 0 # will be used as a proper error system soon enough
 
-proc ExecuteBinary*(name: string, origin: string, exe: string): void =
+proc ExecuteBinary*(name: string, origin: string, exe: string): int =
     var process = ProcApi.CreateProcess(name, origin)
 
     process.ProcessState.RunningProcess =
       proc(procobj: ProcApi.ProcessObject): int =
-        MakeProcess(procobj, exe)
+        try:
+            return MakeProcess(procobj, exe)
+        except BINERRC.AttemptedExecuteNull as e:
+            FatalCrash(BINERRC.AttemptedExecuteNull, e.msg, procobj)
+            return -1 # will be used as a proper error system soon enough
+
     
     process.ProcessState.IsRunning = true
     ProcApi.LinkProcess(process)
-    discard process.ProcessState.RunningProcess(process)
-    return
+    let ret = process.ProcessState.RunningProcess(process)
+    return ret
+

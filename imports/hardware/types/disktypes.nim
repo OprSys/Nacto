@@ -31,3 +31,14 @@ method GetFileType*(self: File): string =
         return "exe"
     of FT.FileTypes.Invalid:
         return "inv"
+    else:
+        return "inv"
+
+proc `$`*(obj: CoreDataObject): string =
+    if obj of File:
+        return "File:" & obj.Name
+    elif obj of Directory:
+        return "Directory:" & obj.Name
+    else:
+        return "CoreDataObject:" & obj.Name
+

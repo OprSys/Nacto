@@ -28,4 +28,5 @@ if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
 echo Compiling %PROJECT_NAME% for %TARGET%...
 nim c %NIM_OS% --out:"%OUTPUT_DIR%/%PROJECT_NAME%%EXT%" --path:"imports" --hints:on --warnings:on "%MAIN_FILE%"
 
+xcopy /E /I "initramfs" "%OUTPUT_DIR%/initramfs"
 echo Build complete: %OUTPUT_DIR%/%PROJECT_NAME%%EXT%
