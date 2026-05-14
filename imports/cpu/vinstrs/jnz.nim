@@ -14,4 +14,4 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
         discard vinstr_registry.lookup("JMP")(@[jumpto], procobj)
     return 0
 
-register("JZ", execute)
+register("JNZ", execute)
