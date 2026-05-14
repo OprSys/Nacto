@@ -1,0 +1,2 @@
+type
+    UnInit* = ref object

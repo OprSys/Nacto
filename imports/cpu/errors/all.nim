@@ -1,4 +1,10 @@
 import cpu/errors/executenull
 import cpu/errors/invalidinstr
+import cpu/errors/outofbounds
+import cpu/errors/binerrc
+import cpu/errors/divisionbyzero
 export executenull
 export invalidinstr
+export outofbounds
+export binerrc
+export divisionbyzero

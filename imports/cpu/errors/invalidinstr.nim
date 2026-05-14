@@ -1,3 +1,4 @@
+import cpu/errors/binerrc
+
 type
-    InvalidInstruction* = object of CatchableError
-        InstrName*: string
+    InvalidInstruction* = object of BinaryError

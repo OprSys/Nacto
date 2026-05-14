@@ -5,6 +5,7 @@ type
         ProgramCounter*: int
         RunningProcess*: ProcessRoutine
         IsRunning*: bool
+        Vm*: array[8, int]
 
     ProcessObject* = ref object
         Name*: string

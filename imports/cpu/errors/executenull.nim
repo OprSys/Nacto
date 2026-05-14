@@ -1,2 +1,4 @@
+import cpu/errors/binerrc
+
 type
-    AttemptedExecuteNull* = object of CatchableError
+    AttemptedExecuteNull* = object of BinaryError
