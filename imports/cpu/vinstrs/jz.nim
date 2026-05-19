@@ -8,7 +8,7 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
     let jumpto = args[1]
 
     let regNum = parseInt(reg)
-    let regVal = procobj.ProcessState.Vm[regNum - 1]
+    let regVal = procobj.ProcessState.Vm[regNum]
 
     if regVal == 0:
         discard vinstr_registry.lookup("JMP")(@[jumpto], procobj)

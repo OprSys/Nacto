@@ -8,17 +8,17 @@ export BINERRC
 export VINSTRS
 
 proc FatalCrash(errtype: BINERRC.BinaryError, reason: string, procobj: ProcApi.ProcTypes.ProcessObject): void =
-    echo(fmt"Fatal exception. {procobj.Name}:{procobj.Id} has experienced a crash that Nacto cannot recover.{'\n'}Nacto has crashed, with reason: {reason}{'\n'}[{errtype.name}]")
+    echo(fmt"A fatal crash has been triggered.{'\n'}FatalCrash Trace{'\n'}{'\n'}{'\n'}General{'\n'}Suspected line: {procobj.ProcessState.RunningProcessString[procobj.ProcessState.ProgramCounter]}{'\n'}Crash reason: {reason}{'\n'}Binary Error Code (BINERRC): {errtype.name}{'\n'}{'\n'}Program{'\n'}Name: {procobj.Name}{'\n'}Id: {procobj.Id}{'\n'}ProgramCounter: {$procobj.ProcessState.ProgramCounter}")
     return
 
 proc ResolveOperand(token: string, procobj: ProcApi.ProcTypes.ProcessObject): string =
     if token.len >= 2 and token[0] == 'x':
         let regNum = parseInt(token[1..^1])
 
-        if regNum < 1 or regNum > 8:
-            raise newException(BINERRC.OutOfBounds, "exceeded confined space of CPU vm")
+        if regNum < 0 or regNum > 7:
+            raise newException(BINERRC.OutOfBounds, "exceeded confined space of CPU VM array")
 
-        return $procobj.ProcessState.Vm[regNum - 1]
+        return $procobj.ProcessState.Vm[regNum]
 
     return token
 
@@ -42,25 +42,27 @@ proc tokenizeInstr*(str: string): seq[string] =
     var inGroup = false
     var cur: string
     for c in str:
-      if c == '|':
-        if inGroup:
-          result.add(cur)
-          cur.setLen(0)
-          inGroup = false
-        else:
-          inGroup = true
-      elif inGroup:
-        cur.add(c)
-      elif c != ' ':
-        cur.add(c)
-      elif cur.len > 0:
-        result.add(cur)
-        cur.setLen(0)
+        if c == '|':
+            if inGroup:
+                result.add(cur)
+                cur.setLen(0)
+                inGroup = false
+            else:
+                inGroup = true
+        elif inGroup:
+            cur.add(c)
+        elif c != ' ':
+            cur.add(c)
+        elif cur.len > 0:
+            result.add(cur)
+            cur.setLen(0)
     if cur.len > 0:
-      result.add(cur)
+        result.add(cur)
 
 proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
     let instructions = exe.split('\n')
+
+    procobj.ProcessState.RunningProcessString = instructions
 
     while procobj.ProcessState.IsRunning:
         let pc = procobj.ProcessState.ProgramCounter
@@ -69,7 +71,7 @@ proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
 
         let instr = instructions[pc]
         if instr.len == 0:
-            raise newException(BINERRC.AttemptedExecuteNull, "attempted to execute null instruction") # this makes it so that a HALT instruction is required at the end of every program
+            raise newException(BINERRC.ImplicitAbsentInstruction, "encountered an empty line")
 
         
         let tokenized = tokenizeInstr(instr)
@@ -79,8 +81,10 @@ proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
 
         let base = tokenized[0]
         var args = tokenized[1..^1]
+        let prevPc = procobj.ProcessState.ProgramCounter
         EvaluateInstr(base, args, procobj)
-        inc procobj.ProcessState.ProgramCounter
+        if procobj.ProcessState.ProgramCounter == prevPc:
+            inc procobj.ProcessState.ProgramCounter
     return 0
 
 proc ExecuteBinary*(name: string, origin: string, exe: string): int =
@@ -93,7 +97,7 @@ proc ExecuteBinary*(name: string, origin: string, exe: string): int =
         except BINERRC.BinaryError as e:
             FatalCrash(e[], e.msg, procobj)
             return -1
-    
+
     process.ProcessState.IsRunning = true
     ProcApi.LinkProcess(process)
     let ret = process.ProcessState.RunningProcess(process)

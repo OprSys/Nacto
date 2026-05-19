@@ -1,9 +1,10 @@
 import process/procapi as ProcApi
 import cpu/vinstr_registry
 
+import hardware/ram as RAM
+
 proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int =
-    for arg in args[0..^1]:
-        echo(arg)
+    echo RAM.RAM.repr
     return 0
 
-register("DEBUGPRINTARGS", execute)
+register("DEBUGRAMDUMP", execute)

@@ -3,8 +3,12 @@ import cpu/errors/invalidinstr
 import cpu/errors/outofbounds
 import cpu/errors/binerrc
 import cpu/errors/divisionbyzero
+import cpu/errors/implicitabsentinstruction
+import cpu/errors/limitexceeded
 export executenull
 export invalidinstr
 export outofbounds
 export binerrc
 export divisionbyzero
+export implicitabsentinstruction
+export limitexceeded

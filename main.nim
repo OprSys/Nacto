@@ -17,16 +17,16 @@ proc CreateSimulationDataFolder(): void =
         writeFile(ROOTFS_PATH, "")
         writeFile(DISCLAIMER_PATH, disclaimer_msg)
 
-proc loadInitramfs(): void =
+proc loadInitramfs(): bool =
     let jsonPath = getAppDir() / "sim" / "rootfs.json"
     if fileExists(jsonPath):
         let data = parseFile(jsonPath)
         FS.LoadRoot(NactoDisk.get_root(), data)
-        return
+        return true
 
     let initDir = getAppDir() / "initramfs"
     if not dirExists(initDir):
-        return
+        return false
 
     for path in walkDirRec(initDir):
         let relPath = relativePath(path, initDir)
@@ -61,6 +61,7 @@ proc loadInitramfs(): void =
                 file.Data = readFile(path)
 
     removeDir(initDir)
+    return true
 
 proc printVfsTree(path: string, indent: int = 0) =
     for entry in FS.ListDirectory(path):
@@ -72,7 +73,8 @@ proc printVfsTree(path: string, indent: int = 0) =
         else:
             echo prefix & entry.Name
 
-loadInitramfs()
+if loadInitramfs() == false:
+    echo("error")
 CreateSimulationDataFolder()
 var savedata = FS.SaveRoot(NactoDisk.get_root())
 writeFile(ROOTFS_PATH, $savedata)

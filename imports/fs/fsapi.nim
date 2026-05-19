@@ -153,7 +153,7 @@ proc ExecuteBinaryAtPath*(path: string): void =
     let obj = ResolvePath(path)
     if obj == nil or not (obj of NactoDisk.File):
         return
-    let file = NactoDisk.File(obj)
+    let file = cast[NactoDisk.File](obj)
     if file.FileType != NactoDisk.FileTypes.Binary:
         return
     discard CpuApi.ExecuteBinary(file.Name, path, file.Data)

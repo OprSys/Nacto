@@ -6,6 +6,7 @@ type
         RunningProcess*: ProcessRoutine
         IsRunning*: bool
         Vm*: array[8, int]
+        RunningProcessString*: seq[string]
 
     ProcessObject* = ref object
         Name*: string
