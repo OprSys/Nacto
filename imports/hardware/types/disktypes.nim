@@ -31,6 +31,8 @@ method GetFileType*(self: File): string =
         return "exe"
     of FT.FileTypes.Invalid:
         return "inv"
+    of FT.FileTypes.ImportableBinary:
+        return "lib"
     else:
         return "inv"
 

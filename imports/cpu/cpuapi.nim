@@ -4,12 +4,31 @@ import std/strformat
 import cpu/vinstr as VINSTRS
 import process/procapi as ProcApi
 import cpu/errors/all as BINERRC
+import fs/errors/all as FSERRC
 export BINERRC
 export VINSTRS
 
-proc FatalCrash(errtype: BINERRC.BinaryError, reason: string, procobj: ProcApi.ProcTypes.ProcessObject): void =
-    echo(fmt"A fatal crash has been triggered.{'\n'}FatalCrash Trace{'\n'}{'\n'}{'\n'}General{'\n'}Suspected line: {procobj.ProcessState.RunningProcessString[procobj.ProcessState.ProgramCounter]}{'\n'}Crash reason: {reason}{'\n'}Binary Error Code (BINERRC): {errtype.name}{'\n'}{'\n'}Program{'\n'}Name: {procobj.Name}{'\n'}Id: {procobj.Id}{'\n'}ProgramCounter: {$procobj.ProcessState.ProgramCounter}")
-    return
+proc trace(err: ref CatchableError, procobj: ProcApi.ProcTypes.ProcessObject, isFatal: bool): void =
+    var groupName: string
+    var errCode: string
+    if err of BINERRC.BinaryError:
+        groupName = "BinaryError"
+        errCode = "(BINERRC)"
+    elif err of FSERRC.FSError:
+        groupName = "FSError"
+        errCode = "(FSERRC)"
+    else:
+        groupName = "CatchableError"
+        errCode = "(UNKERRC)"
+    let crashType = if isFatal: "FatalCrash" else: "Crash"
+    let article = if isFatal: "A fatal" else: "A"
+    echo(fmt"{article} crash has been triggered.{'\n'}{crashType} Trace{'\n'}{'\n'}{'\n'}General{'\n'}Suspected line: {procobj.ProcessState.RunningProcessString[procobj.ProcessState.ProgramCounter]}{'\n'}Crash reason: {err.msg}{'\n'}Crash type: {errCode} {groupName}.{err.name}{'\n'}{'\n'}Program{'\n'}Name: {procobj.Name}{'\n'}Id: {procobj.Id}{'\n'}ProgramCounter: {$procobj.ProcessState.ProgramCounter}")
+
+proc FatalCrash(err: ref CatchableError, procobj: ProcApi.ProcTypes.ProcessObject): void =
+    trace(err, procobj, isFatal = true)
+
+proc Crash(err: ref CatchableError, procobj: ProcApi.ProcTypes.ProcessObject): void =
+    trace(err, procobj, isFatal = false)
 
 proc ResolveOperand(token: string, procobj: ProcApi.ProcTypes.ProcessObject): string =
     if token.len >= 2 and token[0] == 'x':
@@ -59,6 +78,28 @@ proc tokenizeInstr*(str: string): seq[string] =
     if cur.len > 0:
         result.add(cur)
 
+    var expanded: seq[string] = @[]
+    for token in result:
+        block expandCheck:
+            if token.len >= 4 and token[0] == 'y':
+                let dotPos = token.find('.', 1)
+                if dotPos > 1 and dotPos < token.len - 1:
+                    let bankPart = token[1..dotPos-1]
+                    let slotPart = if dotPos < token.len - 2 and token[dotPos+1] == 'y':
+                            token[dotPos+2..^1]
+                        else:
+                            token[dotPos+1..^1]
+                    try:
+                        discard parseInt(bankPart)
+                        discard parseInt(slotPart)
+                        expanded.add(bankPart)
+                        expanded.add(slotPart)
+                        break expandCheck
+                    except ValueError:
+                        discard
+            expanded.add(token)
+    result = expanded
+
 proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
     let instructions = exe.split('\n')
 
@@ -66,10 +107,10 @@ proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
 
     while procobj.ProcessState.IsRunning:
         let pc = procobj.ProcessState.ProgramCounter
-        if pc >= instructions.len:
+        if pc >= procobj.ProcessState.RunningProcessString.len:
             raise newException(BINERRC.AttemptedExecuteNull, "attempted to execute null instruction") # this makes it so that a HALT instruction is required at the end of every program
 
-        let instr = instructions[pc]
+        let instr = procobj.ProcessState.RunningProcessString[pc]
         if instr.len == 0:
             raise newException(BINERRC.ImplicitAbsentInstruction, "encountered an empty line")
 
@@ -82,9 +123,11 @@ proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
         let base = tokenized[0]
         var args = tokenized[1..^1]
         let prevPc = procobj.ProcessState.ProgramCounter
+        let prevLen = procobj.ProcessState.RunningProcessString.len
         EvaluateInstr(base, args, procobj)
         if procobj.ProcessState.ProgramCounter == prevPc:
-            inc procobj.ProcessState.ProgramCounter
+            if procobj.ProcessState.RunningProcessString.len == prevLen:
+                inc procobj.ProcessState.ProgramCounter
     return 0
 
 proc ExecuteBinary*(name: string, origin: string, exe: string): int =
@@ -95,8 +138,12 @@ proc ExecuteBinary*(name: string, origin: string, exe: string): int =
         try:
             return MakeProcess(procobj, exe)
         except BINERRC.BinaryError as e:
-            FatalCrash(e[], e.msg, procobj)
+            FatalCrash(e, procobj)
             return -1
+        except FSERRC.FSError as e:
+            Crash(e, procobj)
+            return -1
+
 
     process.ProcessState.IsRunning = true
     ProcApi.LinkProcess(process)

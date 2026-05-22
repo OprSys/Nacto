@@ -16,9 +16,9 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
     let highramint = parseInt(highram)
     let lowramint = parseInt(lowram)
 
-    if highramint < 0 or highramint > 32:
+    if highramint < 0 or highramint > 31:
         raise newException(BINERRC.OutOfBounds, "RAM high-level slot " & highram & " is not in the range of 0 to 31")
-    if lowramint < 0 or lowramint > 16:
+    if lowramint < 0 or lowramint > 15:
         raise newException(BINERRC.OutOfBounds, "RAM low-level slot " & lowram & " is not in the range of 0 to 15")
     
     if valint < LIMITS.LIM_MINIMUM or valint > LIMITS.LIM_MAXIMUM:

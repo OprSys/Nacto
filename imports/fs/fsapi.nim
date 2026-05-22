@@ -1,7 +1,7 @@
 import std/strutils
 import std/json
 import hardware/disk as NactoDisk
-import cpu/cpuapi as CpuApi
+
 
 proc ResolvePath*(path: string): NactoDisk.CoreDataObject =
     if path == "" or path == "/":
@@ -148,13 +148,3 @@ proc LoadRoot*(target: NactoDisk.Directory, data: JsonNode): void =
                 Data: child["data"].getStr()
             )
             target.Children.add(file)
-
-proc ExecuteBinaryAtPath*(path: string): void =
-    let obj = ResolvePath(path)
-    if obj == nil or not (obj of NactoDisk.File):
-        return
-    let file = cast[NactoDisk.File](obj)
-    if file.FileType != NactoDisk.FileTypes.Binary:
-        return
-    discard CpuApi.ExecuteBinary(file.Name, path, file.Data)
-    return

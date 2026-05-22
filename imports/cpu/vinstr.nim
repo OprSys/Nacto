@@ -16,3 +16,5 @@ import cpu/vinstrs/jnz
 import cpu/vinstrs/store
 import cpu/vinstrs/debugramdump
 import cpu/vinstrs/load
+import cpu/vinstrs/syscall
+import cpu/vinstrs/includee

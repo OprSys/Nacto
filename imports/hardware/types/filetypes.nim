@@ -1,3 +1,3 @@
 type
     FileTypes* = enum
-        Text, Binary, Invalid
+        Text, Binary, ImportableBinary, Invalid

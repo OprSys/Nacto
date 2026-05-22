@@ -1,8 +1,7 @@
 import std/os
 import std/strutils
 import std/json
-import fs/fsapi as FS
-import hardware/disk as NactoDisk
+import system/nacto as Nacto
 
 const ROOTFS_PATH: string = "sim/rootfs.json"
 const DISCLAIMER_PATH: string = "sim/DISCLAIMER.txt"
@@ -21,7 +20,7 @@ proc loadInitramfs(): bool =
     let jsonPath = getAppDir() / "sim" / "rootfs.json"
     if fileExists(jsonPath):
         let data = parseFile(jsonPath)
-        FS.LoadRoot(NactoDisk.get_root(), data)
+        Nacto.FsApi.LoadRoot(Nacto.NactoDisk.get_root(), data)
         return true
 
     let initDir = getAppDir() / "initramfs"
@@ -36,10 +35,10 @@ proc loadInitramfs(): bool =
         var parentVfs = "/"
         for seg in parts[0..^2]:
             let checkPath = if parentVfs == "/": "/" & seg else: parentVfs & "/" & seg
-            if FS.ResolvePath(checkPath) == nil:
-                let dir = FS.CreateDirectory(parentVfs, seg)
+            if Nacto.FsApi.ResolvePath(checkPath) == nil:
+                let dir = Nacto.FsApi.CreateDirectory(parentVfs, seg)
                 if dir != nil:
-                    FS.LinkCoreDataObject(dir)
+                    Nacto.FsApi.LinkCoreDataObject(dir)
             parentVfs = checkPath
 
         let dotParts = fileName.split('.')
@@ -47,26 +46,26 @@ proc loadInitramfs(): bool =
             let vfsName = dotParts[0..^3].join(".")
             let vfsExt = dotParts[^2]
 
-            var fileType = NactoDisk.FT.FileTypes.Invalid
-            for o in ord(low(NactoDisk.FT.FileTypes)) .. ord(high(NactoDisk.FT.FileTypes)):
-                let ft = NactoDisk.FT.FileTypes(o)
-                let dummy = NactoDisk.File(FileType: ft, Name: "", Data: "")
+            var fileType = Nacto.NactoDisk.FT.FileTypes.Invalid
+            for o in ord(low(Nacto.NactoDisk.FT.FileTypes)) .. ord(high(Nacto.NactoDisk.FT.FileTypes)):
+                let ft = Nacto.NactoDisk.FT.FileTypes(o)
+                let dummy = Nacto.NactoDisk.File(FileType: ft, Name: "", Data: "")
                 if dummy.GetFileType() == vfsExt:
                     fileType = ft
                     break
 
-            let file = FS.CreateFile(parentVfs, vfsName, fileType)
+            let file = Nacto.FsApi.CreateFile(parentVfs, vfsName, fileType)
             if file != nil:
-                FS.LinkCoreDataObject(file)
+                Nacto.FsApi.LinkCoreDataObject(file)
                 file.Data = readFile(path)
 
     removeDir(initDir)
     return true
 
 proc printVfsTree(path: string, indent: int = 0) =
-    for entry in FS.ListDirectory(path):
+    for entry in Nacto.FsApi.ListDirectory(path):
         let prefix = repeat("  ", indent)
-        if entry of NactoDisk.Directory:
+        if entry of Nacto.NactoDisk.Directory:
             echo prefix & entry.Name & "/"
             let childPath = if path == "/": "/" & entry.Name else: path & "/" & entry.Name
             printVfsTree(childPath, indent + 1)
@@ -76,6 +75,6 @@ proc printVfsTree(path: string, indent: int = 0) =
 if loadInitramfs() == false:
     echo("error")
 CreateSimulationDataFolder()
-var savedata = FS.SaveRoot(NactoDisk.get_root())
+var savedata = Nacto.FsApi.SaveRoot(Nacto.NactoDisk.get_root())
 writeFile(ROOTFS_PATH, $savedata)
-FS.ExecuteBinaryAtPath("/boot/kernel")
+Nacto.exec.ExecuteBinaryAtPath("/boot/kernel")
