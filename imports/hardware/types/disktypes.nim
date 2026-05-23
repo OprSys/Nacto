@@ -32,7 +32,7 @@ method GetFileType*(self: File): string =
     of FT.FileTypes.Invalid:
         return "inv"
     of FT.FileTypes.ImportableBinary:
-        return "lib"
+        return "incl"
     else:
         return "inv"
 

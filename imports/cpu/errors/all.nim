@@ -5,6 +5,7 @@ import cpu/errors/binerrc
 import cpu/errors/divisionbyzero
 import cpu/errors/implicitabsentinstruction
 import cpu/errors/limitexceeded
+import cpu/errors/invalidsyntax
 export executenull
 export invalidinstr
 export outofbounds
@@ -12,3 +13,4 @@ export binerrc
 export divisionbyzero
 export implicitabsentinstruction
 export limitexceeded
+export invalidsyntax

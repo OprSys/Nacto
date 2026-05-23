@@ -122,6 +122,17 @@ proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
 
         let base = tokenized[0]
         var args = tokenized[1..^1]
+
+        let cur = procobj.ProcessState.CurrentCustomInstr
+        if cur != nil:
+            for i in 0..<args.len:
+                if args[i].len > 1 and args[i][0] == '$':
+                    let argName = args[i][1..^1]
+                    for argDef in cur.Arguments:
+                        if argDef.Name == argName:
+                            args[i] = $argDef.Value
+                            break
+
         let prevPc = procobj.ProcessState.ProgramCounter
         let prevLen = procobj.ProcessState.RunningProcessString.len
         EvaluateInstr(base, args, procobj)

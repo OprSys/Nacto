@@ -1,0 +1,38 @@
+import std/strutils
+import std/tables
+
+import process/procapi as ProcApi
+import cpu/vinstr_registry
+import cpu/errors/all as BINERRC
+
+proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int =
+    let uinstr = args[0]
+    let args = args[1..^1]
+
+    let customInstr = procobj.ProcessState.CustomInstrs.getOrDefault(uinstr)
+    if customInstr == nil:
+        raise newException(BINERRC.InvalidInstruction, "unknown custom instruction \"" & uinstr & "\"")
+
+    procobj.ProcessState.ReturnBack = procobj.ProcessState.ProgramCounter + 1
+
+    for arg in args:
+        var split = arg.split(':', maxsplit=1)
+        let argName = split[0]
+        var argValue = split[1]
+        if argValue.len >= 2 and argValue[0] == 'x':
+            let regNum = parseInt(argValue[1..^1])
+
+            if regNum < 0 or regNum > 7:
+                raise newException(BINERRC.OutOfBounds, "exceeded confined space of CPU VM array")
+
+            argValue = $procobj.ProcessState.Vm[regNum]
+        for argDef in customInstr.Arguments:
+            if argDef.Name == argName:
+                argDef.Value = parseInt(argValue)
+                break
+
+    procobj.ProcessState.CurrentCustomInstr = customInstr
+    discard vinstr_registry.lookup("JMP")(@[$customInstr.StartPC], procobj)
+    return 0
+
+register("ICALL", execute)

@@ -1,34 +1,46 @@
-STORE 72 y1.y0
+- VINSTR Test Demo
+- Tests current features of VINSTR.
+INCLUDE /incl/io
+-
+- 1. Normal Print (prints "Heya," using the IO print character instruction)
+ICALL IO_PRINTCHAR ASCII:72
+ICALL IO_PRINTCHAR ASCII:101
+ICALL IO_PRINTCHAR ASCII:121
+ICALL IO_PRINTCHAR ASCII:97
+ICALL IO_PRINTCHAR ASCII:10
+-
+- 2. Manual Print (prints "Heya," manually with SYSCALL/STORE/SETVAL)
 SETVAL 0 1
 SETVAL 1 1
+- This is actually not needed, as all VM registers are set to 0. However, it is expected to be explicit in VINSTR.
 SETVAL 2 0
+STORE 72 y1.y0
 SYSCALL
 STORE 101 y1.y0
 SYSCALL
-STORE 108 y1.y0
+STORE 121 y1.y0
 SYSCALL
-SYSCALL
-STORE 111 y1.y0
-SYSCALL
-STORE 44 y1.y0
-SYSCALL
-STORE 32 y1.y0
-SYSCALL
-STORE 87 y1.y0
-SYSCALL
-STORE 111 y1.y0
-SYSCALL
-STORE 114 y1.y0
-SYSCALL
-STORE 108 y1.y0
-SYSCALL
-STORE 100 y1.y0
-SYSCALL
-STORE 33 y1.y0
+STORE 97 y1.y0
 SYSCALL
 STORE 10 y1.y0
 SYSCALL
-STORE 0 y1.y0
+- Manual clean-up
 SETVAL 0 0
 SETVAL 1 0
+SETVAL 2 0
+STORE 0 y1.y0
+-
+- 3. Random Math (throws a bunch of random numbers together with random ops)
+- Starting point
+SETVAL 0 10
+ADD 0 x0 5
+DIV 0 x0 2
+MUL 0 x0 27
+SUB 0 x0 100
+ADD 0 x0 25
+- Currently, there is no way to convert int -> string. So, just view it manually.
+DEBUGVMREGDUMP
+SETVAL 0 0
+-
+- End
 HALT
