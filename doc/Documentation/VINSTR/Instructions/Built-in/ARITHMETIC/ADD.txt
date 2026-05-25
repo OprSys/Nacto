@@ -1,0 +1,37 @@
+ADD - DESCRIPTION
+    Takes two values, adds them, then assigns the result to a register.
+
+ADD - SYNTAX
+    ADD <reg to put result> <val1> <val2>
+
+ADD - OPERANDS
+    reg to put result - any
+        The specified register to store the result.
+    val1 - any
+        The first number in use for the operation.
+    val2 - any
+        The second number in use for the operation.
+
+ADD - POSSIBLE ERRORS
+    BinaryError.OutOfBounds
+        If the specified register is not in the range of the VM array, this will be raised.
+    BinaryError.LimitExceeded
+        If the result to assign is lower than LIM_MINIMUM or higher than LIM_MAXIMUM, this will be raised.
+
+ADD - GOTCHAS
+    1.
+        Note that ADD uses the logic of SETVAL internally to set the register value. So, rules for SETVAL also applies to ADD.
+
+ADD - EXAMPLES
+    1.
+        - Add using literals, then store in register 0.
+        - Result is 10.
+        ADD 0 5 5
+        HALT
+    2.
+        - Add using registers, then store in register 0.
+        - Result is 10.
+        SETVAL 1 5
+        SETVAL 2 5
+        ADD 0 x1 x2
+        HALT

@@ -1,0 +1,28 @@
+JNZ - DESCRIPTION
+    Jumps to a specified program counter, if a register is not equal to 0.
+
+JNZ - SYNTAX
+    JNZ <reg to check> <pc>
+
+JNZ - OPERANDS
+    reg to check - any
+        The register to check if it is 0 or not.
+    pc - any
+        The program counter to jump to.
+
+JNZ - POSSIBLE ERRORS
+    BinaryError.OutOfBounds
+        If the specified register is not in the range of the VM array, this will be raised.
+
+JNZ - GOTCHAS
+    1.
+        Note that JNZ uses the logic of JMP internally to jump. So, rules for JMP also applies to JNZ.
+
+JNZ - EXAMPLES
+    1.
+        - Simple countdown.
+        - Register 0 is the starting point.
+        SETVAL 0 10
+        SUB 0 x0 1
+        JNZ 0 0
+        HALT

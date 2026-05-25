@@ -13,6 +13,7 @@ import cpu/vinstrs/divi
 import cpu/vinstrs/jmp
 import cpu/vinstrs/jz
 import cpu/vinstrs/jnz
+import cpu/vinstrs/jeq
 import cpu/vinstrs/store
 import cpu/vinstrs/debugramdump
 import cpu/vinstrs/load

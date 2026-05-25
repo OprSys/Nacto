@@ -20,15 +20,9 @@ proc trace(err: ref CatchableError, procobj: ProcApi.ProcTypes.ProcessObject, is
     else:
         groupName = "CatchableError"
         errCode = "(UNKERRC)"
-    let crashType = if isFatal: "FatalCrash" else: "Crash"
-    let article = if isFatal: "A fatal" else: "A"
-    echo(fmt"{article} crash has been triggered.{'\n'}{crashType} Trace{'\n'}{'\n'}{'\n'}General{'\n'}Suspected line: {procobj.ProcessState.RunningProcessString[procobj.ProcessState.ProgramCounter]}{'\n'}Crash reason: {err.msg}{'\n'}Crash type: {errCode} {groupName}.{err.name}{'\n'}{'\n'}Program{'\n'}Name: {procobj.Name}{'\n'}Id: {procobj.Id}{'\n'}ProgramCounter: {$procobj.ProcessState.ProgramCounter}")
-
-proc FatalCrash(err: ref CatchableError, procobj: ProcApi.ProcTypes.ProcessObject): void =
-    trace(err, procobj, isFatal = true)
-
-proc Crash(err: ref CatchableError, procobj: ProcApi.ProcTypes.ProcessObject): void =
-    trace(err, procobj, isFatal = false)
+    let crashType = if isFatal: "FatalCrash" else: "Error"
+    let article = if isFatal: "A fatal crash" else: "An error"
+    echo(fmt"{article} has been triggered.{'\n'}{crashType} Trace{'\n'}{'\n'}{'\n'}General{'\n'}Suspected line: {procobj.ProcessState.RunningProcessString[procobj.ProcessState.ProgramCounter]}{'\n'}Crash reason: {err.msg}{'\n'}Crash type: {errCode} {groupName}.{err.name}{'\n'}{'\n'}Program{'\n'}Name: {procobj.Name}{'\n'}Id: {procobj.Id}{'\n'}ProgramCounter: {$procobj.ProcessState.ProgramCounter}")
 
 proc ResolveOperand(token: string, procobj: ProcApi.ProcTypes.ProcessObject): string =
     if token.len >= 2 and token[0] == 'x':
@@ -135,7 +129,16 @@ proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
 
         let prevPc = procobj.ProcessState.ProgramCounter
         let prevLen = procobj.ProcessState.RunningProcessString.len
-        EvaluateInstr(base, args, procobj)
+        try:
+            EvaluateInstr(base, args, procobj)
+        except BINERRC.BinaryError as e:
+            trace(e, procobj, true)
+            procobj.ProcessState.IsRunning = false
+        except FSERRC.FSError as e:
+            trace(e, procobj, e.IsFatal)
+            if e.IsFatal:
+                procobj.ProcessState.IsRunning = false
+
         if procobj.ProcessState.ProgramCounter == prevPc:
             if procobj.ProcessState.RunningProcessString.len == prevLen:
                 inc procobj.ProcessState.ProgramCounter
@@ -146,14 +149,7 @@ proc ExecuteBinary*(name: string, origin: string, exe: string): int =
 
     process.ProcessState.RunningProcess =
       proc(procobj: ProcApi.ProcessObject): int =
-        try:
             return MakeProcess(procobj, exe)
-        except BINERRC.BinaryError as e:
-            FatalCrash(e, procobj)
-            return -1
-        except FSERRC.FSError as e:
-            Crash(e, procobj)
-            return -1
 
 
     process.ProcessState.IsRunning = true

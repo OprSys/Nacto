@@ -1,0 +1,23 @@
+JEQ - DESCRIPTION
+    Jumps to a specified program counter, if a value is equal to another value.
+
+JEQ - SYNTAX
+    JEQ <val1> <val2> <pc>
+
+JEQ - OPERANDS
+    val1 - any
+        The first value for check.
+    val2 - any
+        The second value for check.
+    pc - any
+        The program counter to jump to.
+
+JEQ - POSSIBLE ERRORS
+    JEQ cannot error.
+
+JEQ - GOTCHAS
+    1.
+        Note that JEQ uses the logic of JMP internally to jump. So, rules for JMP also applies to JEQ.
+
+JEQ - EXAMPLES
+    No examples to show.

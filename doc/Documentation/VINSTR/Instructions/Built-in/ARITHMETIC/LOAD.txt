@@ -1,0 +1,30 @@
+LOAD - DESCRIPTION
+    Loads a value from RAM.
+
+LOAD - SYNTAX
+    LOAD <reg> <highslot> <lowslot>
+
+LOAD - OPERANDS
+    reg - any
+        The register to load from RAM.
+    highslot - any
+        The top level of RAM to specify.
+    lowslot - any
+        The bottom level of RAM to specify.
+
+LOAD - POSSIBLE ERRORS
+    BinaryError.OutOfBounds
+        If highslot or lowslot exceeds the space of RAM, this will be raised.
+    BinaryError.LimitExceeded
+        If the register to load into is lower than LIM_MINIMUM or higher than LIM_MAXIMUM, this will be raised.
+
+LOAD - GOTCHAS
+    1.
+        Note than RAM slots are accessed as 0-indices.
+
+LOAD - EXAMPLES
+    1.
+        - Loads RAM[0][0] (being 45) into register 0.
+        STORE 45 0 0
+        LOAD 0 0 0
+        HALT

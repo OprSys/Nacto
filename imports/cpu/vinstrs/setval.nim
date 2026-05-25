@@ -11,7 +11,7 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
     let value_to_set = args[1]
     let regint = parseInt(reg)
     if regint < 0 or regint > 7:
-        raise newException(BINERRC.OutOfBounds, "register " & reg & " is not in the range of 0 to 7")
+        raise newException(BINERRC.OutOfBounds, "exceeded confined space of CPU VM array")
     let vtsint = parseInt(value_to_set)
     if vtsint < LIMITS.LIM_MINIMUM or vtsint > LIMITS.LIM_MAXIMUM:
         raise newException(BINERRC.LimitExceeded, value_to_set & " is not in the range of " & $LIMITS.LIM_MINIMUM & " to " & $LIMITS.LIM_MAXIMUM)

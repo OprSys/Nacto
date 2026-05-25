@@ -1,0 +1,37 @@
+SUB - DESCRIPTION
+    Takes two values, subtracts them, then assigns the result to a register.
+
+SUB - SYNTAX
+    SUB <reg to put result> <val1> <val2>
+
+SUB - OPERANDS
+    reg to put result - any
+        The specified register to store the result.
+    val1 - any
+        The first number in use for the operation.
+    val2 - any
+        The second number in use for the operation.
+
+SUB - POSSIBLE ERRORS
+    BinaryError.OutOfBounds
+        If the specified register is not in the range of the VM array, this will be raised.
+    BinaryError.LimitExceeded
+        If the result to assign is lower than LIM_MINIMUM or higher than LIM_MAXIMUM, this will be raised.
+
+SUB - GOTCHAS
+    1.
+        Note that SUB uses the logic of SETVAL internally to set the register value. So, rules for SETVAL also applies to SUB.
+
+SUB - EXAMPLES
+    1.
+        - Subtract using literals, then store in register 0.
+        - Result is 5.
+        SUB 0 7 2
+        HALT
+    2.
+        - Subtract using registers, then store in register 0.
+        - Result is 5.
+        SETVAL 1 7
+        SETVAL 2 2
+        SUB 0 x1 x2
+        HALT
