@@ -1,0 +1,34 @@
+HALT - DESCRIPTION
+    Halts the program.
+
+HALT - SYNTAX
+    HALT
+
+HALT - OPERANDS
+    HALT does not have any operands.
+
+HALT - POSSIBLE ERRORS
+    AttemptedExecuteNull
+        If you do NOT have a HALT instruction in a program, this is raised.
+
+HALT - GOTCHAS
+    HALT has no gotchas.
+
+HALT - EXAMPLES
+    1.
+        - Unconditional VINSTR program.
+        SETVAL 0 5
+        ADD 0 x0 5
+        SUB 0 x0 2
+        - This instruction is REQUIRED for VINSTR. Without it, you would get an error.
+        HALT
+    2.
+        - Conditional VINSTR program.
+        - Register 0 is the flag.
+        SETVAL 0 1
+        JZ 0 5
+        DEBUGRAMDUMP
+        HALT
+        -
+        DEBUGPROCDUMP
+        HALT

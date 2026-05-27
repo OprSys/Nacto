@@ -1,0 +1,4 @@
+SYSC_PRINT - 1
+    Prints to stdout. Uses RAM to specify ASCII value.
+    x1 = RAM highslot
+    x2 = RAM lowslot

@@ -1,0 +1,9 @@
+If you need to group several operands to allow spaces, you can use |...| syntax.
+
+For example,
+Without |...|:
+SETVAL 0 5 -> ["SETVAL", "0", "5"]
+
+With |...|:
+SETVAL |0 5| -> ["SETVAL", "0 5"]
+(this would error, however, because SETVAL doesn't work this way.)

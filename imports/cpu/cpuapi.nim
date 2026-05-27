@@ -18,11 +18,12 @@ proc trace(err: ref CatchableError, procobj: ProcApi.ProcTypes.ProcessObject, is
         groupName = "FSError"
         errCode = "(FSERRC)"
     else:
-        groupName = "CatchableError"
+        groupName = "Error"
         errCode = "(UNKERRC)"
     let crashType = if isFatal: "FatalCrash" else: "Error"
     let article = if isFatal: "A fatal crash" else: "An error"
-    echo(fmt"{article} has been triggered.{'\n'}{crashType} Trace{'\n'}{'\n'}{'\n'}General{'\n'}Suspected line: {procobj.ProcessState.RunningProcessString[procobj.ProcessState.ProgramCounter]}{'\n'}Crash reason: {err.msg}{'\n'}Crash type: {errCode} {groupName}.{err.name}{'\n'}{'\n'}Program{'\n'}Name: {procobj.Name}{'\n'}Id: {procobj.Id}{'\n'}ProgramCounter: {$procobj.ProcessState.ProgramCounter}")
+    let suspectedLine = if procobj.ProcessState.ProgramCounter >= procobj.ProcessState.RunningProcessString.len: "<eof>" else: procobj.ProcessState.RunningProcessString[procobj.ProcessState.ProgramCounter]
+    echo(fmt"{article} has been triggered.{'\n'}{crashType} Trace{'\n'}{'\n'}{'\n'}General{'\n'}Occured at: {suspectedLine}{'\n'}Crash reason: {err.msg}{'\n'}Crash type: {errCode} {groupName}.{err.name}{'\n'}{'\n'}Program{'\n'}Name: {procobj.Name}{'\n'}Id: {procobj.Id}{'\n'}ProgramCounter: {$procobj.ProcessState.ProgramCounter}")
 
 proc ResolveOperand(token: string, procobj: ProcApi.ProcTypes.ProcessObject): string =
     if token.len >= 2 and token[0] == 'x':
@@ -102,11 +103,17 @@ proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
     while procobj.ProcessState.IsRunning:
         let pc = procobj.ProcessState.ProgramCounter
         if pc >= procobj.ProcessState.RunningProcessString.len:
-            raise newException(BINERRC.AttemptedExecuteNull, "attempted to execute null instruction") # this makes it so that a HALT instruction is required at the end of every program
+            let error = newException(BINERRC.AttemptedExecuteNull, "went beyond program bounds")
+            trace(error, procobj, true)
+            procobj.ProcessState.IsRunning = false
+            break
 
         let instr = procobj.ProcessState.RunningProcessString[pc]
         if instr.len == 0:
-            raise newException(BINERRC.ImplicitAbsentInstruction, "encountered an empty line")
+            let error = newException(BINERRC.ImplicitAbsentInstruction, "encountered an empty line")
+            trace(error, procobj, true)
+            procobj.ProcessState.IsRunning = false
+            break
 
         
         let tokenized = tokenizeInstr(instr)

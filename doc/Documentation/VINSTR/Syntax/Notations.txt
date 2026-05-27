@@ -1,0 +1,16 @@
+Register Syntax (or X Notation):
+To access the values of registers, you can do xN, for N is a register.
+
+For example, this would set register 0 with the value at register 4:
+SETVAL 0 x4
+
+
+RAM Syntax (or Y Notation):
+This is purely a ease-of-use tool. This is not required. If you want to reference a location in RAM, you can do yA.yB, for A is the highslot and B is the lowslot. For memory operations, you don't need to do this.
+
+For example, this would set RAM[3][7] with the number 26:
+STORE 26 y3.y7
+
+Alternatively, you can do this:
+STORE 26 3 7
+..however, this wouldn't be as clean. It is recommended to use Y Notation for the ease of people reading programs, however it is not strictly required.
