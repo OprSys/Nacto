@@ -12,7 +12,7 @@
 ---
 
 ## 1. What is Nacto?
-Nacto, or the full naming, OprSys Nacto, is a simulated operating system environment, which simulates a custom OS, called Nacto, which takes a UNIX-like approach. Nacto is not a real operating system, but a simulator.
+Nacto, or the full naming, OprSys Nacto, is a simulated operating system environment, which takes a UNIX-like approach. Nacto is not a real operating system, but a simulator.
 
 ---
 
