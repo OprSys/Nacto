@@ -27,4 +27,4 @@ Nacto's user-facing side (i.e., what *you* see in the simulation) is meant to be
 ---
 
 ## 4. Disclaimer
-Nacto is highly unstable. It currently, as of now, ***has no version.*** Nacto is still in-development, and the ABI for it has barely been made. It is not safe to run as of now.
+Nacto is highly unstable. It currently, as of now, ***has no version.*** Nacto is still in-development, and the ABI for it has barely been made.
