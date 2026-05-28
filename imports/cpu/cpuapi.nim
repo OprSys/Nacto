@@ -73,28 +73,6 @@ proc tokenizeInstr*(str: string): seq[string] =
     if cur.len > 0:
         result.add(cur)
 
-    var expanded: seq[string] = @[]
-    for token in result:
-        block expandCheck:
-            if token.len >= 4 and token[0] == 'y':
-                let dotPos = token.find('.', 1)
-                if dotPos > 1 and dotPos < token.len - 1:
-                    let bankPart = token[1..dotPos-1]
-                    let slotPart = if dotPos < token.len - 2 and token[dotPos+1] == 'y':
-                            token[dotPos+2..^1]
-                        else:
-                            token[dotPos+1..^1]
-                    try:
-                        discard parseInt(bankPart)
-                        discard parseInt(slotPart)
-                        expanded.add(bankPart)
-                        expanded.add(slotPart)
-                        break expandCheck
-                    except ValueError:
-                        discard
-            expanded.add(token)
-    result = expanded
-
 proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
     let instructions = exe.split('\n')
 
