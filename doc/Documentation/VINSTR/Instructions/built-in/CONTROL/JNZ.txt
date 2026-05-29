@@ -5,9 +5,9 @@ JNZ - SYNTAX
     JNZ <reg to check> <pc>
 
 JNZ - OPERANDS
-    reg to check - any
+    reg to check
         The register to check if it is 0 or not.
-    pc - any
+    pc
         The program counter to jump to.
 
 JNZ - POSSIBLE ERRORS
@@ -24,5 +24,10 @@ JNZ - EXAMPLES
         - Register 0 is the starting point.
         SETVAL 0 10
         SUB 0 x0 1
-        JNZ 0 0
+        JNZ 0 1
         HALT
+
+JNZ - SEE ALSO
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JMP.txt
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JZ.txt
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JEQ.txt

@@ -15,3 +15,7 @@ DEBUGPROCDUMP - GOTCHAS
 
 DEBUGPROCDUMP - EXAMPLES
     No examples to show.
+
+DEBUGPROCDUMP - SEE ALSO
+    /Documentation/VINSTR/Instructions/built-in/DEBUG/DEBUGRAMDUMP.txt
+    /Documentation/VINSTR/Instructions/built-in/DEBUG/DEBUGVMREGDUMP.txt

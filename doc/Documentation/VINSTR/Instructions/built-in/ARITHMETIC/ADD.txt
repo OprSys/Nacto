@@ -5,11 +5,11 @@ ADD - SYNTAX
     ADD <reg to put result> <val1> <val2>
 
 ADD - OPERANDS
-    reg to put result - any
+    reg to put result
         The specified register to store the result.
-    val1 - any
+    val1
         The first number in use for the operation.
-    val2 - any
+    val2
         The second number in use for the operation.
 
 ADD - POSSIBLE ERRORS
@@ -35,3 +35,9 @@ ADD - EXAMPLES
         SETVAL 2 5
         ADD 0 x1 x2
         HALT
+
+ADD - SEE ALSO
+    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SETVAL.txt
+    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SUB.txt
+    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/MUL.txt
+    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/DIV.txt

@@ -23,8 +23,10 @@ SYSCALL - EXAMPLES
         - Following registers are arguments for SYSCALL. Register 1 would specify the highslot in RAM, register 2 would specify the lowslot in RAM, to point to an ASCII value. Text in VINSTR is simply ASCII codes in RAM.
         SETVAL 1 1
         SETVAL 2 0
-        - This is RAM Syntax (or Y Notation). The first number in yN.yN is the highslot, and the second number is the lowslot.
-        STORE 65 y1.y0
+        STORE 65 1 0
         - Execute the system call, printing 'A'.
         SYSCALL
         HALT
+
+SYSCALL - SEE ALSO
+    N/A

@@ -5,9 +5,9 @@ SETVAL - SYNTAX
     SETVAL <reg> <val>
 
 SETVAL - OPERANDS
-    reg - any
+    reg
         The register to assign to.
-    val - any
+    val
         The value (an integer) to give to the specified register (reg).
 
 SETVAL - POSSIBLE ERRORS
@@ -30,3 +30,9 @@ SETVAL - EXAMPLES
         SETVAL 1 5
         SETVAL 0 x1
         HALT
+
+SETVAL - SEE ALSO
+    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/ADD.txt
+    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SUB.txt
+    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/MUL.txt
+    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/DIV.txt

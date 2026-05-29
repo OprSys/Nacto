@@ -1,4 +1,3 @@
-import std/sequtils
 import std/tables
 
 import process/procapi as ProcApi
@@ -31,12 +30,17 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
     if mendpc > procobj.ProcessState.RunningProcessString.len:
         mendpc = procobj.ProcessState.RunningProcessString.len
     discard vinstr_registry.lookup("JMP")(@[$mendpc], procobj)
-    
+
+    var customArgs: seq[ProcApi.ProcTypes.CustomInstrArgumentObject] = @[]
+    if use_args:
+        for a in args:
+            customArgs.add(ProcApi.ProcTypes.CustomInstrArgumentObject(Name: a))
+
     var custominstr = ProcApi.ProcTypes.CustomInstrObject(
         Name: instrname,
         StartPC: startpc,
         EndPC: endpc,
-        Arguments: if use_args: args.mapIt(ProcApi.ProcTypes.CustomInstrArgumentObject(Name: it)) else: @[]
+        Arguments: customArgs
     )
     procobj.ProcessState.CustomInstrs[instrname] = custominstr
     return 0

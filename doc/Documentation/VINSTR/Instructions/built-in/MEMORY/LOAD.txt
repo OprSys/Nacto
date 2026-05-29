@@ -5,11 +5,11 @@ LOAD - SYNTAX
     LOAD <reg> <highslot> <lowslot>
 
 LOAD - OPERANDS
-    reg - any
+    reg
         The register to load from RAM.
-    highslot - any
+    highslot
         The top level of RAM to specify.
-    lowslot - any
+    lowslot
         The bottom level of RAM to specify.
 
 LOAD - POSSIBLE ERRORS
@@ -20,7 +20,7 @@ LOAD - POSSIBLE ERRORS
 
 LOAD - GOTCHAS
     1.
-        Note than RAM slots are accessed as 0-indices.
+        Note that RAM slots are accessed as 0-indices.
 
 LOAD - EXAMPLES
     1.
@@ -28,3 +28,7 @@ LOAD - EXAMPLES
         STORE 45 0 0
         LOAD 0 0 0
         HALT
+
+LOAD - SEE ALSO
+    /Documentation/VINSTR/Instructions/built-in/MEMORY/STORE.txt
+    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SETVAL.txt

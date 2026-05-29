@@ -5,11 +5,11 @@ STORE - SYNTAX
     STORE <val> <highslot> <lowslot>
 
 STORE - OPERANDS
-    val - any
+    val
         The value to assign to RAM.
-    highslot - any
+    highslot
         The top level of RAM to specify.
-    lowslot - any
+    lowslot
         The bottom level of RAM to specify.
 
 STORE - POSSIBLE ERRORS
@@ -20,10 +20,13 @@ STORE - POSSIBLE ERRORS
 
 STORE - GOTCHAS
     1.
-        Note than RAM slots are accessed as 0-indices.
+        Note that RAM slots are accessed as 0-indices.
 
 STORE - EXAMPLES
     1.
         - Set the RAM slot RAM[0][0] with 5.
         STORE 5 0 0
         HALT
+
+STORE - SEE ALSO
+    /Documentation/VINSTR/Instructions/built-in/MEMORY/LOAD.txt

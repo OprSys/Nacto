@@ -3,7 +3,7 @@ import std/json
 import hardware/disk as NactoDisk
 
 
-proc ResolvePath*(path: string): NactoDisk.CoreDataObject =
+proc ResolvePath*(path: string): NactoDisk.DiskTypes.CoreDataObject =
     if path == "" or path == "/":
         return NactoDisk.get_root()
 
@@ -12,7 +12,7 @@ proc ResolvePath*(path: string): NactoDisk.CoreDataObject =
         if part != "" and part != ".":
             components.add(part)
 
-    var current: NactoDisk.CoreDataObject
+    var current: NactoDisk.DiskTypes.CoreDataObject
     current = NactoDisk.get_root()
 
     for part in components:
@@ -22,8 +22,8 @@ proc ResolvePath*(path: string): NactoDisk.CoreDataObject =
             else:
                 return nil
         else:
-            if current of NactoDisk.Directory:
-                let dir = NactoDisk.Directory(current)
+            if current of NactoDisk.DiskTypes.Directory:
+                let dir = NactoDisk.DiskTypes.Directory(current)
                 var found = false
                 for child in dir.Children:
                     if child.Name == part:
@@ -38,66 +38,66 @@ proc ResolvePath*(path: string): NactoDisk.CoreDataObject =
     return current
 
 
-proc CreateFile*(path: string, name: string, kind: NactoDisk.FileTypes): NactoDisk.File =
+proc CreateFile*(path: string, name: string, kind: NactoDisk.DiskTypes.FT.FileTypes): NactoDisk.DiskTypes.File =
     let parentObj = ResolvePath(path)
 
     if parentObj == nil:
         return nil
 
-    if not (parentObj of NactoDisk.Directory):
+    if not (parentObj of NactoDisk.DiskTypes.Directory):
         return nil
 
-    let parentDir = cast[NactoDisk.Directory](parentObj)
+    let parentDir = cast[NactoDisk.DiskTypes.Directory](parentObj)
 
-    return NactoDisk.File(
-        Name: name,
-        Parent: parentDir,
-        FileType: kind,
-        Data: ""
-    )
+    var file = NactoDisk.DiskTypes.File()
+    file.Name = name
+    file.Parent = parentDir
+    file.FileType = kind
+    file.Data = ""
+    return file
 
-proc CreateDirectory*(path: string, name: string): NactoDisk.Directory =
+proc CreateDirectory*(path: string, name: string): NactoDisk.DiskTypes.Directory =
     let parentObj = ResolvePath(path)
 
     if parentObj == nil:
         return nil
 
-    if not (parentObj of NactoDisk.Directory):
+    if not (parentObj of NactoDisk.DiskTypes.Directory):
         return nil
 
-    let parentDir = cast[NactoDisk.Directory](parentObj)
+    let parentDir = cast[NactoDisk.DiskTypes.Directory](parentObj)
 
-    return NactoDisk.Directory(
-        Name: name,
-        Parent: parentDir,
-        Children: @[]
-    )
+    var dir = NactoDisk.DiskTypes.Directory()
+    dir.Name = name
+    dir.Parent = parentDir
+    dir.Children = @[]
+    return dir
 
-proc LinkCoreDataObject*(entry: NactoDisk.CoreDataObject): void =
+proc LinkCoreDataObject*(entry: NactoDisk.DiskTypes.CoreDataObject): void =
     if entry.Parent == nil:
         return
 
-    if not (entry.Parent of NactoDisk.Directory):
+    if not (entry.Parent of NactoDisk.DiskTypes.Directory):
         return
 
-    let parentDir = cast[NactoDisk.Directory](entry.Parent)
+    let parentDir = cast[NactoDisk.DiskTypes.Directory](entry.Parent)
     parentDir.Children.add(entry)
 
 proc ReadFile*(path: string): string =
     let obj = ResolvePath(path)
-    if obj != nil and obj of NactoDisk.File:
-        return NactoDisk.File(obj).Data
+    if obj != nil and obj of NactoDisk.DiskTypes.File:
+        return NactoDisk.DiskTypes.File(obj).Data
     return ""
 
 proc WriteFile*(path: string, data: string): void =
     let obj = ResolvePath(path)
-    if obj != nil and obj of NactoDisk.File:
-        NactoDisk.File(obj).Data = data
+    if obj != nil and obj of NactoDisk.DiskTypes.File:
+        NactoDisk.DiskTypes.File(obj).Data = data
 
-proc ListDirectory*(path: string): seq[NactoDisk.CoreDataObject] =
+proc ListDirectory*(path: string): seq[NactoDisk.DiskTypes.CoreDataObject] =
     let obj = ResolvePath(path)
-    if obj != nil and obj of NactoDisk.Directory:
-        return NactoDisk.Directory(obj).Children
+    if obj != nil and obj of NactoDisk.DiskTypes.Directory:
+        return NactoDisk.DiskTypes.Directory(obj).Children
     return @[]
 
 proc RenameCoreDataObject*(path: string, newName: string): void =
@@ -105,46 +105,47 @@ proc RenameCoreDataObject*(path: string, newName: string): void =
     if obj != nil:
         obj.Name = newName
 
-proc SaveRoot*(target: NactoDisk.CoreDataObject): JsonNode =
+proc SaveRoot*(target: NactoDisk.DiskTypes.CoreDataObject): JsonNode =
     result = %*{"name": target.Name}
-    if target of NactoDisk.Directory:
-        let dir = NactoDisk.Directory(target)
+    if target of NactoDisk.DiskTypes.Directory:
+        let dir = NactoDisk.DiskTypes.Directory(target)
         result["type"] = %"directory"
         var children: seq[JsonNode] = @[]
         for child in dir.Children:
             children.add(SaveRoot(child))
         result["children"] = %children
-    elif target of NactoDisk.File:
-        let file = NactoDisk.File(target)
+    elif target of NactoDisk.DiskTypes.File:
+        let file = NactoDisk.DiskTypes.File(target)
         result["type"] = %"file"
         result["fileType"] = %file.GetFileType()
         result["data"] = %file.Data
 
-proc LoadRoot*(target: NactoDisk.Directory, data: JsonNode): void =
+proc LoadRoot*(target: NactoDisk.DiskTypes.Directory, data: JsonNode): void =
     target.Name = data["name"].getStr()
     target.Children.setLen(0)
     for child in data["children"]:
         if child["type"].getStr() == "directory":
-            let dir = NactoDisk.Directory(
-                Name: child["name"].getStr(),
-                Parent: target,
-                Children: @[]
-            )
+            var dir = NactoDisk.DiskTypes.Directory()
+            dir.Name = child["name"].getStr()
+            dir.Parent = target
+            dir.Children = @[]
             LoadRoot(dir, child)
             target.Children.add(dir)
         else:
-            var ft = NactoDisk.FileTypes.Invalid
+            var ft = default(NactoDisk.DiskTypes.FT.FileTypes)
             let ext = child["fileType"].getStr()
-            for o in ord(low(NactoDisk.FileTypes)) .. ord(high(NactoDisk.FileTypes)):
-                let ftt = NactoDisk.FileTypes(o)
-                let dummy = NactoDisk.File(FileType: ftt, Name: "", Data: "")
+            for o in ord(low(NactoDisk.DiskTypes.FT.FileTypes)) .. ord(high(NactoDisk.DiskTypes.FT.FileTypes)):
+                let ftt = NactoDisk.DiskTypes.FT.FileTypes(o)
+                var dummy = NactoDisk.DiskTypes.File()
+                dummy.FileType = ftt
+                dummy.Name = ""
+                dummy.Data = ""
                 if dummy.GetFileType() == ext:
                     ft = ftt
                     break
-            let file = NactoDisk.File(
-                Name: child["name"].getStr(),
-                Parent: target,
-                FileType: ft,
-                Data: child["data"].getStr()
-            )
+            var file = NactoDisk.DiskTypes.File()
+            file.Name = child["name"].getStr()
+            file.Parent = target
+            file.FileType = ft
+            file.Data = child["data"].getStr()
             target.Children.add(file)

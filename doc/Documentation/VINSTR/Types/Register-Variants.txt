@@ -1,8 +1,0 @@
-literal
-    Specifies that this register MUST NOT use `x` syntax.
-
-register
-    Specifies that this register MUST use `x` syntax.
-
-any
-    Specifies that this register can use either "literal" or "register" syntax.

@@ -5,11 +5,11 @@ JEQ - SYNTAX
     JEQ <val1> <val2> <pc>
 
 JEQ - OPERANDS
-    val1 - any
+    val1
         The first value for check.
-    val2 - any
+    val2
         The second value for check.
-    pc - any
+    pc
         The program counter to jump to.
 
 JEQ - POSSIBLE ERRORS
@@ -21,3 +21,8 @@ JEQ - GOTCHAS
 
 JEQ - EXAMPLES
     No examples to show.
+
+JEQ - SEE ALSO
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JMP.txt
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JZ.txt
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JNZ.txt

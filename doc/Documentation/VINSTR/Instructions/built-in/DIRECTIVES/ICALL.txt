@@ -1,0 +1,27 @@
+ICALL - DESCRIPTION
+    Executes a custom instruction.
+
+ICALL - SYNTAX
+    ICALL <instruction name> <[args]...>
+
+ICALL - OPERANDS
+    instruction name
+        The name of the custom instruction to execute.
+    [args]...
+        Optional arguments for the custom instruction. Each argument is given in the form ARGUMENTNAME:VALUE. The VALUE can be both a literal integer, or a register value using X Notation.
+
+ICALL - POSSIBLE ERRORS
+    BinaryError.InvalidInstruction
+        If the given instruction name does not match any previously defined custom instruction, this is raised.
+    BinaryError.OutOfBounds
+        If an invalid register is given, this is raised.
+
+ICALL - GOTCHAS
+    1.
+        ICALL jumps to the start of the custom instruction body. The custom instruction must end with IEND, which returns execution to the line after ICALL.
+
+ICALL - EXAMPLES
+    No examples to show (mostly already provided in IDEF documentation).
+
+ICALL - SEE ALSO
+    /Documentation/VINSTR/Instructions/built-in/DIRECTIVES/IDEF.txt

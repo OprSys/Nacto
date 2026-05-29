@@ -32,3 +32,9 @@ HALT - EXAMPLES
         -
         DEBUGPROCDUMP
         HALT
+
+HALT - SEE ALSO
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JMP.txt
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JEQ.txt
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JZ.txt
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JNZ.txt

@@ -5,9 +5,9 @@ JZ - SYNTAX
     JZ <reg to check> <pc>
 
 JZ - OPERANDS
-    reg to check - any
+    reg to check
         The register to check if it is 0 or not.
-    pc - any
+    pc
         The program counter to jump to.
 
 JZ - POSSIBLE ERRORS
@@ -20,3 +20,8 @@ JZ - GOTCHAS
 
 JZ - EXAMPLES
     No examples to show.
+
+JZ - SEE ALSO
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JMP.txt
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JNZ.txt
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JEQ.txt

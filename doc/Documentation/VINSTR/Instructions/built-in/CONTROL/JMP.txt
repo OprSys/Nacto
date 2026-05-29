@@ -5,7 +5,7 @@ JMP - SYNTAX
     JMP <pc>
 
 JMP - OPERANDS
-    pc - any
+    pc
         The program counter to jump to.
 
 JMP - POSSIBLE ERRORS
@@ -25,3 +25,8 @@ JMP - EXAMPLES
         ADD 0 x0 1
         JMP 0
         HALT
+
+JMP - SEE ALSO
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JEQ.txt
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JZ.txt
+    /Documentation/VINSTR/Instructions/built-in/CONTROL/JNZ.txt

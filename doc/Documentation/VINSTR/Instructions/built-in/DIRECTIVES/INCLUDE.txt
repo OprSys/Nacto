@@ -1,0 +1,30 @@
+INCLUDE - DESCRIPTION
+    Pull in a `.incl` file and writes its contents into the caller program, at the current line.
+
+INCLUDE - SYNTAX
+    INCLUDE <vfs path to file>
+
+INCLUDE - OPERANDS
+    vfs path to file
+        The file to include into the running program.
+
+INCLUDE - POSSIBLE ERRORS
+    FSError.NoPath
+        If the provided path does not exist, this is raised.
+    FSError.InvalidCDOType
+        If the provided path is a directory or not an includable file, this is raised.
+
+INCLUDE - GOTCHAS
+    1.
+        INCLUDE removes its own line, and replaces it with the includable file's content directly.
+
+INCLUDE - EXAMPLES
+    1.
+        - Bring in the `io` lib.
+        INCLUDE /incl/io
+        - Use IO_PRINTCHAR (from /incl/io), with ASCII = 65. Prints 'A'.
+        ICALL IO_PRINTCHAR ASCII:65
+        HALT
+
+INCLUDE - SEE ALSO
+    /Documentation/VINSTR/Instructions/built-in/DIRECTIVES/ICALL.txt
