@@ -21,12 +21,10 @@ JMP - EXAMPLES
         JMP 0
         HALT
     2.
-        - Infinite loop until limit would be exeeded from ADD. HALT here would not ever happen.
+        - Infinite loop until limit would be exeeded from ADD. HALT here would never happen.
         ADD 0 x0 1
         JMP 0
         HALT
 
 JMP - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/CONTROL/JEQ.txt
-    /Documentation/VINSTR/Instructions/built-in/CONTROL/JZ.txt
-    /Documentation/VINSTR/Instructions/built-in/CONTROL/JNZ.txt
+    N/A

@@ -37,7 +37,4 @@ MUL - EXAMPLES
         HALT
 
 MUL - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/ADD.txt
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SUB.txt
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/DIV.txt
     /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SETVAL.txt

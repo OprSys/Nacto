@@ -23,6 +23,4 @@ JEQ - EXAMPLES
     No examples to show.
 
 JEQ - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/CONTROL/JMP.txt
-    /Documentation/VINSTR/Instructions/built-in/CONTROL/JZ.txt
-    /Documentation/VINSTR/Instructions/built-in/CONTROL/JNZ.txt
+    N/A

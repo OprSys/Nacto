@@ -41,7 +41,4 @@ DIV - EXAMPLES
         HALT
 
 DIV - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/ADD.txt
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SUB.txt
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/MUL.txt
     /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SETVAL.txt

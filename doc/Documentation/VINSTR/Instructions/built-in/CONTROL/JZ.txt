@@ -22,6 +22,4 @@ JZ - EXAMPLES
     No examples to show.
 
 JZ - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/CONTROL/JMP.txt
-    /Documentation/VINSTR/Instructions/built-in/CONTROL/JNZ.txt
-    /Documentation/VINSTR/Instructions/built-in/CONTROL/JEQ.txt
+    N/A

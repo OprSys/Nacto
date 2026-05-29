@@ -28,6 +28,4 @@ JNZ - EXAMPLES
         HALT
 
 JNZ - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/CONTROL/JMP.txt
-    /Documentation/VINSTR/Instructions/built-in/CONTROL/JZ.txt
-    /Documentation/VINSTR/Instructions/built-in/CONTROL/JEQ.txt
+    N/A

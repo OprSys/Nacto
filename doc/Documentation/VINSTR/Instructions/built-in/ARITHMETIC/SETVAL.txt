@@ -32,7 +32,4 @@ SETVAL - EXAMPLES
         HALT
 
 SETVAL - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/ADD.txt
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SUB.txt
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/MUL.txt
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/DIV.txt
+    /Documentation/VINSTR/instructions/built-in/CONTROL/HALT.txt

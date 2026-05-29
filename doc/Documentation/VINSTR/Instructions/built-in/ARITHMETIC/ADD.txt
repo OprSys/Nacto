@@ -38,6 +38,3 @@ ADD - EXAMPLES
 
 ADD - SEE ALSO
     /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SETVAL.txt
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SUB.txt
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/MUL.txt
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/DIV.txt
