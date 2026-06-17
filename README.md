@@ -1,5 +1,5 @@
 # Nacto
-**Nacto is a simulated operating system, created in Nim.**
+**Nacto is a simulated computer, made in Nim.**
 
 ---
 
