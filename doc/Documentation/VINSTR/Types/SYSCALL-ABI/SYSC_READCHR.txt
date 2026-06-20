@@ -1,0 +1,9 @@
+SYSC_READCHR - DESCRIPTION
+    Gets a single character from the keyboard and puts the result as an ASCII code to RAM.
+
+SYSC_READCHR - NUMBER
+    2
+
+SYSC_READCHR - ARGUMENTS
+    x1 = Specified highslot.
+    x2 = Specified lowslot.

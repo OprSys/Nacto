@@ -1,0 +1,88 @@
+IDEF VFS_OPENFILE HIGHSLOT LENGTH TOREGISTER
+- Description: Opens an existing file, and sets a register with its file descriptor.
+- Param `HIGHSLOT`: The highslot to specify where to look for the path of the file.
+- Param `LENGTH`: The length of the given string.
+- Param `TOREGISTER`: Which register to store the file descriptor.
+SETVAL 0 3
+SETVAL 1 $LENGTH
+SETVAL 2 $HIGHSLOT
+SETVAL 3 $TOREGISTER
+SYSCALL
+IEND
+- ---
+IDEF VFS_CREATEFILE HIGHSLOT LENGTH FILETYPE TOREGISTER
+- Description: Creates a file, and sets a register with its file descriptor.
+- Param `HIGHSLOT`: The highslot to specify where to look for the path of the file.
+- Param `LENGTH`: The length of the given string.
+- Param `FILETYPE`: A number deciding what type of file to create.
+- Param `TOREGISTER`: Which register to store the file descriptor.
+SETVAL 0 4
+SETVAL 1 $LENGTH
+SETVAL 2 $HIGHSLOT
+SETVAL 3 $FILETYPE
+SETVAL 4 $TOREGISTER
+SYSCALL
+IEND
+- ---
+IDEF VFS_WRITEFILECHAR HIGHSLOT LOWSLOT FD INDEX
+- Description: Writes a single character from [highslot][lowslot] into an open file descriptor, at index.
+- Param `HIGHSLOT`: The highslot to specify.
+- Param `LOWSLOT`: The lowslot to specify.
+- Param `FD`: The file descriptor to write to.
+- Param `INDEX`: At which location in the current file's data (0-indexed) to write the character.
+SETVAL 0 5
+SETVAL 1 $HIGHSLOT
+SETVAL 2 $LOWSLOT
+SETVAL 3 $FD
+SETVAL 4 $INDEX
+SYSCALL
+IEND
+- ---
+IDEF VFS_WRITEFILESTR HIGHSLOT LENGTH FD
+- Description: Writes a full string to an open file.
+- Param `HIGHSLOT`: The highslot to specify.
+- Param `LENGTH`: How long the string is expected to be.
+- Param `FD`: The file descriptor to write to.
+SETVAL 5 $HIGHSLOT
+SETVAL 6 $FD
+PLOAD 4 $HIGHSLOT x7
+ICALL VFS_WRITEFILECHAR HIGHSLOT:x5 LOWSLOT:x7 FD:x6 INDEX:x7
+ADD 7 x7 1
+JEQ x7 $LENGTH +2
+JMP -4
+IEND
+- ---
+IDEF VFS_READFILECHAR HIGHSLOT LOWSLOT FD INDEX
+- Description: Reads a single character from an open file descriptor at index, into [highslot][lowslot].
+- Param `HIGHSLOT`: The highslot to store the character into.
+- Param `LOWSLOT`: The lowslot to store the character into.
+- Param `FD`: The file descriptor to read from.
+- Param `INDEX`: At which location in the current file's data (0-indexed) to read the character from.
+SETVAL 0 6
+SETVAL 1 $HIGHSLOT
+SETVAL 2 $LOWSLOT
+SETVAL 3 $FD
+SETVAL 4 $INDEX
+SYSCALL
+IEND
+- ---
+IDEF VFS_READFILESTR HIGHSLOT LENGTH FD
+- Description: Reads a full string from an open file descriptor into a highslot in LRAM.
+- Param `HIGHSLOT`: The highslot to store the string into.
+- Param `LENGTH`: How many characters to read.
+- Param `FD`: The file descriptor to read from.
+SETVAL 5 $HIGHSLOT
+SETVAL 6 $FD
+ICALL VFS_READFILECHAR HIGHSLOT:x5 LOWSLOT:x7 FD:x6 INDEX:x7
+ADD 7 x7 1
+JEQ x7 $LENGTH +2
+JMP -4
+IEND
+- ---
+IDEF VFS_CLOSEFILE FD
+- Description: Closes an open file descriptor.
+- Param `FD`: The file descriptor to close.
+SETVAL 0 7
+SETVAL 1 $FD
+SYSCALL
+IEND

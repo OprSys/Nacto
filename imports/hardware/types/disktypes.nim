@@ -26,15 +26,15 @@ method GetFileType*(self: CoreDataObject): string {.base.} = "inv"
 method GetFileType*(self: File): string =
     case self.FileType
     of FT.FileTypes.Text:
-        return "txt"
+        return "TXT"
     of FT.FileTypes.Binary:
-        return "exe"
+        return "EXE"
     of FT.FileTypes.Invalid:
-        return "inv"
+        return "INV"
     of FT.FileTypes.ImportableBinary:
-        return "incl"
+        return "INCL"
     else:
-        return "inv"
+        return "INV"
 
 proc `$`*(obj: CoreDataObject): string =
     if obj of File:
@@ -42,5 +42,5 @@ proc `$`*(obj: CoreDataObject): string =
     elif obj of Directory:
         return "Directory:" & obj.Name
     else:
-        return "CoreDataObject:" & obj.Name
+        return "CDO:" & obj.Name
 

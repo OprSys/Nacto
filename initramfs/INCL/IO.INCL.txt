@@ -1,0 +1,43 @@
+IDEF IO_PRINTCHAR ASCII
+- Description: Prints a single character.
+- Param `ASCII`: The ASCII code to print.
+SETVAL 0 1
+SETVAL 1 0
+SETVAL 2 0
+PSTORE $ASCII 0 0
+SYSCALL
+IEND
+- ---
+IDEF IO_GETCHAR TOREGISTER
+- Description: Gets input and puts the ASCII value to a register.
+- Param `TOREGISTER`: The register to put the ASCII value.
+SETVAL 0 2
+SETVAL 1 0
+SETVAL 2 0
+SYSCALL
+PLOAD $TOREGISTER 0 0
+IEND
+- ---
+IDEF IO_GETSTR HIGHSLOT ECHOBACK
+- Description: Gets input and puts a whole string into a highslot in LRAM.
+- Param `HIGHSLOT`: The highslot to specify.
+- Param `ECHOBACK`: If to print the characters when typed. Useful for security-based input.
+ICALL IO_GETCHAR TOREGISTER:4
+JEQ $ECHOBACK 0 +2
+ICALL IO_PRINTCHAR ASCII:x4
+PSTORE x4 $HIGHSLOT x3
+ADD 3 x3 1
+JEQ x4 10 +2
+JMP -6
+IEND
+- ---
+IDEF IO_PRINTSTR HIGHSLOT LENGTH
+- Description: Prints a full string.
+- Param `HIGHSLOT`: The highslot to read from, to print.
+- Param `LENGTH`: How long the string is expected to be.
+PLOAD 4 $HIGHSLOT x3
+ICALL IO_PRINTCHAR ASCII:x4
+ADD 3 x3 1
+JEQ x3 $LENGTH +2
+JMP -4
+IEND

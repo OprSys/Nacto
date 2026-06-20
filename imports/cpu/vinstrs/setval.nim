@@ -10,9 +10,9 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
     let reg = args[0]
     let value_to_set = args[1]
     let regint = parseInt(reg)
-    if regint < 0 or regint > 7:
+    if regint < 0 or regint >= ProcApi.ProcTypes.VM_SIZE:
         raise newException(BINERRC.OutOfBounds, "exceeded confined space of CPU VM array")
-    let vtsint = parseInt(value_to_set)
+    let vtsint = try: parseInt(value_to_set) except ValueError: raise newException(BINERRC.LimitExceeded, value_to_set & " is not in the range of " & $LIMITS.LIM_MINIMUM & " to " & $LIMITS.LIM_MAXIMUM)
     if vtsint < LIMITS.LIM_MINIMUM or vtsint > LIMITS.LIM_MAXIMUM:
         raise newException(BINERRC.LimitExceeded, value_to_set & " is not in the range of " & $LIMITS.LIM_MINIMUM & " to " & $LIMITS.LIM_MAXIMUM)
     procobj.ProcessState.Vm[regint] = parseInt(value_to_set)

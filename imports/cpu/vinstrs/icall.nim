@@ -13,7 +13,8 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
     if customInstr == nil:
         raise newException(BINERRC.InvalidInstruction, "unknown custom instruction \"" & uinstr & "\"")
 
-    procobj.ProcessState.ReturnBack = procobj.ProcessState.ProgramCounter + 1
+    procobj.ProcessState.ReturnBack.add(procobj.ProcessState.ProgramCounter + 1)
+    procobj.ProcessState.CurrentCustomInstr.add(customInstr)
 
     for arg in args:
         var split = arg.split(':', maxsplit=1)
@@ -22,7 +23,7 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
         if argValue.len >= 2 and argValue[0] == 'x':
             let regNum = parseInt(argValue[1..^1])
 
-            if regNum < 0 or regNum > 7:
+            if regNum < 0 or regNum >= ProcApi.ProcTypes.VM_SIZE:
                 raise newException(BINERRC.OutOfBounds, "exceeded confined space of CPU VM array")
 
             argValue = $procobj.ProcessState.Vm[regNum]
@@ -30,8 +31,6 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
             if argDef.Name == argName:
                 argDef.Value = parseInt(argValue)
                 break
-
-    procobj.ProcessState.CurrentCustomInstr = customInstr
     discard vinstr_registry.lookup("JMP")(@[$customInstr.StartPC], procobj)
     return 0
 

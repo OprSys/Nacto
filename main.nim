@@ -11,7 +11,7 @@ proc CreateSimulationDataFolder(): void =
         return
     else:
         createDir("sim")
-        let disclaimer_msg = "DISCLAIMER! It is not recommended to modify these files directly. Doing so can result in unattended behavior, which can result in breaking the simulator.\n\nThe 'sim' folder is required to be next to the Nacto binary in order for Nacto to function."
+        let disclaimer_msg = "DISCLAIMER! It is not recommended to modify these files directly. Doing so can result in unattended behavior, which can result in breaking the simulator.\n\nThe \"sim\" folder is required to be next to the Nacto binary in order for Nacto to function."
 
         writeFile(ROOTFS_PATH, "")
         writeFile(DISCLAIMER_PATH, disclaimer_msg)
@@ -62,19 +62,11 @@ proc loadInitramfs(): bool =
     removeDir(initDir)
     return true
 
-proc printVfsTree(path: string, indent: int = 0) =
-    for entry in Nacto.FsApi.ListDirectory(path):
-        let prefix = repeat("  ", indent)
-        if entry of Nacto.NactoDisk.Directory:
-            echo prefix & entry.Name & "/"
-            let childPath = if path == "/": "/" & entry.Name else: path & "/" & entry.Name
-            printVfsTree(childPath, indent + 1)
-        else:
-            echo prefix & entry.Name
+
 
 if loadInitramfs() == false:
     echo("error")
 CreateSimulationDataFolder()
 var savedata = Nacto.FsApi.SaveRoot(Nacto.NactoDisk.get_root())
 writeFile(ROOTFS_PATH, $savedata)
-Nacto.exec.ExecuteBinaryAtPath("/boot/kernel")
+Nacto.exec.ExecuteBinaryAtPath("/BOOT/BOOTMASTERINIT")

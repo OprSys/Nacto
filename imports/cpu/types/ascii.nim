@@ -1,4 +1,5 @@
 const CHAR_NEWLINE* = 10
+const CHAR_CR = 13 # will always be converted to CHAR_NEWLINE. other programs will not be able to use this.
 const CHAR_SPACE* = 32
 const CHAR_EXLMARK* = 33
 const CHAR_DQUOTE* = 34
@@ -100,6 +101,7 @@ const CHAR_INVALID = CHAR_QUSTMARK
 proc ToChar*(numb: int): char =
     case numb
     of CHAR_NEWLINE: '\n'
+    of CHAR_CR: '\n'
     of CHAR_SPACE: ' '
     of CHAR_EXLMARK: '!'
     of CHAR_DQUOTE: '"'
@@ -196,3 +198,104 @@ proc ToChar*(numb: int): char =
     of CHAR_RIGHTCURLYBRACKET: '}'
     of CHAR_TILDE: '~'
     else: chr(CHAR_INVALID)
+
+proc ToCode*(chars: char): int =
+    case chars
+    of '\n': CHAR_NEWLINE
+    of '\r': CHAR_NEWLINE
+    of ' ': CHAR_SPACE
+    of '!': CHAR_EXLMARK
+    of '"': CHAR_DQUOTE
+    of '#': CHAR_OCTOTHORPE
+    of '$': CHAR_DOLLAR
+    of '%': CHAR_PERCENT
+    of '&': CHAR_AMPERSAND
+    of '\'': CHAR_SQUOTE
+    of '(': CHAR_OPENPARENTHESIS
+    of ')': CHAR_CLOSEPARENTHESIS
+    of '*': CHAR_ASTERISK
+    of '+': CHAR_PLUS
+    of ',': CHAR_COMMA
+    of '-': CHAR_HYPHEN
+    of '.': CHAR_PERIOD
+    of '/': CHAR_SLASH
+    of '0': CHAR_ZERO
+    of '1': CHAR_ONE
+    of '2': CHAR_TWO
+    of '3': CHAR_THREE
+    of '4': CHAR_FOUR
+    of '5': CHAR_FIVE
+    of '6': CHAR_SIX
+    of '7': CHAR_SEVEN
+    of '8': CHAR_EIGHT
+    of '9': CHAR_NINE
+    of ':': CHAR_COLON
+    of ';': CHAR_SEMICOLON
+    of '<': CHAR_LEFTBRACKET
+    of '=': CHAR_EQUALS
+    of '>': CHAR_RIGHTBRACKET
+    of '?': CHAR_QUSTMARK
+    of '@': CHAR_ATSYMBOL
+    of 'A': CHAR_CAPITAL_A
+    of 'B': CHAR_CAPITAL_B
+    of 'C': CHAR_CAPITAL_C
+    of 'D': CHAR_CAPITAL_D
+    of 'E': CHAR_CAPITAL_E
+    of 'F': CHAR_CAPITAL_F
+    of 'G': CHAR_CAPITAL_G
+    of 'H': CHAR_CAPITAL_H
+    of 'I': CHAR_CAPITAL_I
+    of 'J': CHAR_CAPITAL_J
+    of 'K': CHAR_CAPITAL_K
+    of 'L': CHAR_CAPITAL_L
+    of 'M': CHAR_CAPITAL_M
+    of 'N': CHAR_CAPITAL_N
+    of 'O': CHAR_CAPITAL_O
+    of 'P': CHAR_CAPITAL_P
+    of 'Q': CHAR_CAPITAL_Q
+    of 'R': CHAR_CAPITAL_R
+    of 'S': CHAR_CAPITAL_S
+    of 'T': CHAR_CAPITAL_T
+    of 'U': CHAR_CAPITAL_U
+    of 'V': CHAR_CAPITAL_V
+    of 'W': CHAR_CAPITAL_W
+    of 'X': CHAR_CAPITAL_X
+    of 'Y': CHAR_CAPITAL_Y
+    of 'Z': CHAR_CAPITAL_Z
+    of '[': CHAR_LEFTSQBRACKET
+    of '\\': CHAR_BACKSLASH
+    of ']': CHAR_RIGHTSQBRACKET
+    of '^': CHAR_CARET
+    of '_': CHAR_UNDERSCORE
+    of '`': CHAR_GRAVE
+    of 'a': CHAR_SMALL_A
+    of 'b': CHAR_SMALL_B
+    of 'c': CHAR_SMALL_C
+    of 'd': CHAR_SMALL_D
+    of 'e': CHAR_SMALL_E
+    of 'f': CHAR_SMALL_F
+    of 'g': CHAR_SMALL_G
+    of 'h': CHAR_SMALL_H
+    of 'i': CHAR_SMALL_I
+    of 'j': CHAR_SMALL_J
+    of 'k': CHAR_SMALL_K
+    of 'l': CHAR_SMALL_L
+    of 'm': CHAR_SMALL_M
+    of 'n': CHAR_SMALL_N
+    of 'o': CHAR_SMALL_O
+    of 'p': CHAR_SMALL_P
+    of 'q': CHAR_SMALL_Q
+    of 'r': CHAR_SMALL_R
+    of 's': CHAR_SMALL_S
+    of 't': CHAR_SMALL_T
+    of 'u': CHAR_SMALL_U
+    of 'v': CHAR_SMALL_V
+    of 'w': CHAR_SMALL_W
+    of 'x': CHAR_SMALL_X
+    of 'y': CHAR_SMALL_Y
+    of 'z': CHAR_SMALL_Z
+    of '{': CHAR_LEFTCURLYBRACKET
+    of '|': CHAR_PIPE
+    of '}': CHAR_RIGHTCURLYBRACKET
+    of '~': CHAR_TILDE
+    else: CHAR_INVALID

@@ -29,4 +29,4 @@ SYSCALL - EXAMPLES
         HALT
 
 SYSCALL - SEE ALSO
-    N/A
+    /Documentation/VINSTR/Types/SYSCALL-ABI/*

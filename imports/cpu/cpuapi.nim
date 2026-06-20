@@ -8,6 +8,11 @@ import fs/errors/all as FSERRC
 export BINERRC
 export VINSTRS
 
+# Debug, used for development. Should not be used in final builds.
+const DEBUG_MODE = false
+# Verbose debug. Requires DEBUG_MODE to work.
+const DEBUG_VERBOSE = false
+
 proc trace(err: ref CatchableError, procobj: ProcApi.ProcTypes.ProcessObject, isFatal: bool): void =
     var groupName: string
     var errCode: string
@@ -29,7 +34,7 @@ proc ResolveOperand(token: string, procobj: ProcApi.ProcTypes.ProcessObject): st
     if token.len >= 2 and token[0] == 'x':
         let regNum = parseInt(token[1..^1])
 
-        if regNum < 0 or regNum > 7:
+        if regNum < 0 or regNum >= ProcApi.ProcTypes.VM_SIZE:
             raise newException(BINERRC.OutOfBounds, "exceeded confined space of CPU VM array")
 
         return $procobj.ProcessState.Vm[regNum]
@@ -74,7 +79,12 @@ proc tokenizeInstr*(str: string): seq[string] =
         result.add(cur)
 
 proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
+    if DEBUG_MODE and DEBUG_VERBOSE:
+        echo("The CPU has been invoked.")
+        echo("Program \"" & procobj.Name & "\", ID \"" & $(procobj.Id) & "\".")
     let instructions = exe.split('\n')
+    if DEBUG_MODE:
+        echo("Instructions to run: " & $(instructions.len))
 
     procobj.ProcessState.RunningProcessString = instructions
 
@@ -87,6 +97,10 @@ proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
             break
 
         let instr = procobj.ProcessState.RunningProcessString[pc]
+        if DEBUG_MODE:
+            echo("instr = " & instr)
+            echo("pc = " & $pc)
+
         if instr.len == 0:
             let error = newException(BINERRC.ImplicitAbsentInstruction, "encountered an empty line")
             trace(error, procobj, true)
@@ -102,7 +116,13 @@ proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
         let base = tokenized[0]
         var args = tokenized[1..^1]
 
-        let cur = procobj.ProcessState.CurrentCustomInstr
+        if DEBUG_MODE and DEBUG_VERBOSE:
+            echo("Instruction RunningProcessString[" & $pc & "] tokenized.")
+            echo("tokenized = " & $tokenized)
+            echo("base = " & base)
+            echo("args = " & $args)
+
+        let cur = if procobj.ProcessState.CurrentCustomInstr.len > 0: procobj.ProcessState.CurrentCustomInstr[^1] else: nil
         if cur != nil:
             for i in 0..<args.len:
                 if args[i].len > 1 and args[i][0] == '$':
@@ -114,13 +134,19 @@ proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
 
         let prevPc = procobj.ProcessState.ProgramCounter
         let prevLen = procobj.ProcessState.RunningProcessString.len
+        if DEBUG_MODE and DEBUG_VERBOSE:
+            echo("prevPc, prevLen = " & $prevPc & ", " & $prevLen)
         try:
+            if DEBUG_MODE and DEBUG_VERBOSE:
+                echo("Executing instruction \"" & base & "\"...")
             EvaluateInstr(base, args, procobj)
         except BINERRC.BinaryError as e:
-            trace(e, procobj, true)
+            if DEBUG_MODE:
+                trace(e, procobj, true)
             procobj.ProcessState.IsRunning = false
         except FSERRC.FSError as e:
-            trace(e, procobj, e.IsFatal)
+            if DEBUG_MODE:
+                trace(e, procobj, e.IsFatal)
             if e.IsFatal:
                 procobj.ProcessState.IsRunning = false
 

@@ -17,6 +17,8 @@ import cpu/vinstrs/jeq
 import cpu/vinstrs/store
 import cpu/vinstrs/debugramdump
 import cpu/vinstrs/load
+import cpu/vinstrs/pstore
+import cpu/vinstrs/pload
 import cpu/vinstrs/syscall
 import cpu/vinstrs/includee
 import cpu/vinstrs/idef
@@ -24,3 +26,8 @@ import cpu/vinstrs/idefhalt
 import cpu/vinstrs/icall
 import cpu/vinstrs/nothing
 import cpu/vinstrs/debugvmregdump
+import cpu/vinstrs/data
+import cpu/vinstrs/pstore
+import cpu/vinstrs/pload
+import cpu/vinstrs/debugvfsdump
+import cpu/vinstrs/debugfdsdump

@@ -6,6 +6,7 @@ import cpu/errors/divisionbyzero
 import cpu/errors/implicitabsentinstruction
 import cpu/errors/limitexceeded
 import cpu/errors/invalidsyntax
+import cpu/errors/invalidindex
 export executenull
 export invalidinstr
 export outofbounds
@@ -14,3 +15,4 @@ export divisionbyzero
 export implicitabsentinstruction
 export limitexceeded
 export invalidsyntax
+export invalidindex
