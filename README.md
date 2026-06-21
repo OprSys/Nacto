@@ -17,7 +17,7 @@ Nacto, or the full naming, OprSys Nacto, is a simulated operating system environ
 ---
 
 ## 2. Why does Nacto exist?
-Nacto is a hobby-project. It exists for entertainment, to show OS concepts, and simply enjoyment to make and develop.
+Nacto is a hobby project. It exists for entertainment, to show OS concepts, and simply enjoyment to make and develop.
 
 ---
 
