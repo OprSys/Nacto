@@ -13,10 +13,7 @@ PLOAD - OPERANDS
         The bottom level of LRAM to specify.
 
 PLOAD - POSSIBLE ERRORS
-    BinaryError.OutOfBounds
-        If highslot or lowslot exceeds the space of LRAM, this will be raised.
-    BinaryError.LimitExceeded
-        If the register to load into is lower than LIM_MINIMUM or higher than LIM_MAXIMUM, this will be raised.
+    placeholder
 
 PLOAD - GOTCHAS
     1.
@@ -30,6 +27,6 @@ PLOAD - EXAMPLES
         HALT
 
 PLOAD - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/MEMORY/STORE.txt
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SETVAL.txt
-    /Documentation/VINSTR/Instructions/built-in/MEMORY/PSTORE.txt
+    /Documentation/VINSTR/Instructions/MEMORY/STORE.txt
+    /Documentation/VINSTR/Instructions/ARITHMETIC/SETVAL.txt
+    /Documentation/VINSTR/Instructions/MEMORY/PSTORE.txt

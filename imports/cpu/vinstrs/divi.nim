@@ -3,7 +3,7 @@ import std/strutils
 import process/procapi as ProcApi
 import cpu/vinstr_registry
 
-import cpu/errors/all as BINERRC
+import error/errorapi as ErrorApi
 
 proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int =
     let reg = args[0]
@@ -14,7 +14,7 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
     let n2int = parseInt(n2)
 
     if n2int == 0:
-        raise newException(BINERRC.DivisionByZero, "division by zero is an undefined result (" & n1 & " / " & n2 & ")")
+        ErrorApi.ThrowError(ErrorApi.newerr("division by zero", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_DIVBYZERO))
     let answer = n1int div n2int
 
     discard vinstr_registry.lookup("SETVAL")(@[reg, $answer], procobj)

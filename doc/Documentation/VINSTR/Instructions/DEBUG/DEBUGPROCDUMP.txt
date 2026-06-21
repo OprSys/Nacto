@@ -8,7 +8,7 @@ DEBUGPROCDUMP - OPERANDS
     DEBUGPROCDUMP does not have any operands.
 
 DEBUGPROCDUMP - POSSIBLE ERRORS
-    DEBUGPROCDUMP cannot error.
+    placeholder
 
 DEBUGPROCDUMP - GOTCHAS
     DEBUGPROCDUMP has no gotchas.
@@ -17,5 +17,7 @@ DEBUGPROCDUMP - EXAMPLES
     No examples to show.
 
 DEBUGPROCDUMP - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/DEBUG/DEBUGRAMDUMP.txt
-    /Documentation/VINSTR/Instructions/built-in/DEBUG/DEBUGVMREGDUMP.txt
+    /Documentation/VINSTR/Instructions/DEBUG/DEBUGRAMDUMP.txt
+    /Documentation/VINSTR/Instructions/DEBUG/DEBUGFDSDUMP.txt
+    /Documentation/VINSTR/Instructions/DEBUG/DEBUGVFSDUMP.txt
+    /Documentation/VINSTR/Instructions/DEBUG/DEBUGVMREGDUMP.txt

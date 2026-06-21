@@ -8,8 +8,7 @@ IEND - OPERANDS
     IEND does not have any operands.
 
 IEND - POSSIBLE ERRORS
-    BinaryError.InvalidInstruction
-        If IEND is encountered outside of a custom instruction definition (i.e., without a preceding IDEF), this is raised.
+    placeholder
 
 IEND - GOTCHAS
     1.
@@ -31,5 +30,5 @@ IEND - EXAMPLES
         IEND
 
 IEND - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/DIRECTIVES/IDEF.txt
-    /Documentation/VINSTR/Instructions/built-in/DIRECTIVES/ICALL.txt
+    /Documentation/VINSTR/Instructions/DIRECTIVES/IDEF.txt
+    /Documentation/VINSTR/Instructions/DIRECTIVES/ICALL.txt

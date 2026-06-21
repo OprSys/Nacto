@@ -13,10 +13,7 @@ ADD - OPERANDS
         The second number in use for the operation.
 
 ADD - POSSIBLE ERRORS
-    BinaryError.OutOfBounds
-        If the specified register is not in the range of the VM array, this will be raised.
-    BinaryError.LimitExceeded
-        If the result to assign is lower than LIM_MINIMUM or higher than LIM_MAXIMUM, this will be raised.
+    placeholder
 
 ADD - GOTCHAS
     1.
@@ -37,4 +34,4 @@ ADD - EXAMPLES
         HALT
 
 ADD - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SETVAL.txt
+    /Documentation/VINSTR/Instructions/ARITHMETIC/SETVAL.txt

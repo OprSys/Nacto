@@ -2,12 +2,11 @@ import std/tables
 
 import process/procapi as ProcApi
 import cpu/vinstr_registry
-
-import cpu/errors/all as BINERRC
+import error/errorapi as ErrorApi
 
 proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int =
     if args.len < 1:
-        raise newException(BINERRC.InvalidSyntax, "too few arguments (< 1)")
+        ErrorApi.ThrowError(ErrorApi.newerr("IDEF requires at least a name argument", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_INVSYN))
     var use_args = false
     let instrname = args[0]
     let args = args[1..^1]
@@ -25,7 +24,7 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
             endpc = i
             break
     if endpc == -1:
-        raise newException(BINERRC.InvalidSyntax, "expected `IEND` instruction")
+        ErrorApi.ThrowError(ErrorApi.newerr("IDEF without matching IEND", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_INVSYN))
     var mendpc = endpc+1
     if mendpc > procobj.ProcessState.RunningProcessString.len:
         mendpc = procobj.ProcessState.RunningProcessString.len

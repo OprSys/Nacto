@@ -15,7 +15,7 @@ JMP - OPERANDS
         Jumps backward by offset lines from the current instruction.
 
 JMP - POSSIBLE ERRORS
-    JMP cannot error.
+    placeholder
 
 JMP - GOTCHAS
     1.

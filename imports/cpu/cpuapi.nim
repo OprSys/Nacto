@@ -1,41 +1,60 @@
 import std/strutils
 import std/strformat
+import std/terminal
 
 import cpu/vinstr as VINSTRS
 import process/procapi as ProcApi
-import cpu/errors/all as BINERRC
-import fs/errors/all as FSERRC
-export BINERRC
+import error/errorapi as ErrorApi
+import system/constants
 export VINSTRS
 
-# Debug, used for development. Should not be used in final builds.
-const DEBUG_MODE = false
-# Verbose debug. Requires DEBUG_MODE to work.
-const DEBUG_VERBOSE = false
+proc waitforenter(): void =
+    while true:
+        let c = terminal.getch()
+        if c == '\r' or c == '\n':
+            break
 
-proc trace(err: ref CatchableError, procobj: ProcApi.ProcTypes.ProcessObject, isFatal: bool): void =
-    var groupName: string
-    var errCode: string
-    if err of BINERRC.BinaryError:
-        groupName = "BinaryError"
-        errCode = "(BINERRC)"
-    elif err of FSERRC.FSError:
-        groupName = "FSError"
-        errCode = "(FSERRC)"
+proc vmToString(procobj: ProcApi.ProcTypes.ProcessObject): string =
+    result = ""
+    for i in 0..<procobj.ProcessState.Vm.len:
+        if i > 0:
+            result.add(", ")
+        result.add($procobj.ProcessState.Vm[i])
+
+proc error(e: ref ErrorApi.SysError.SysError, procobj: ProcApi.ProcTypes.ProcessObject): void =
+    e.Context.ErrPC = procobj.ProcessState.ProgramCounter
+    let formatted = ErrorApi.format(e, constants.DEBUG_MODE)
+    if not constants.DEBUG_MODE:
+        if e.Context.ErrSeverity == ErrorApi.SysError.ErrorSeverity.Fatal:
+            echo(formatted)
+            echo("vm")
+            echo(vmToString(procobj))
+            echo("\nproc")
+            echo(procobj.Name & ":" & $procobj.Id)
     else:
-        groupName = "Error"
-        errCode = "(UNKERRC)"
-    let crashType = if isFatal: "FatalCrash" else: "Error"
-    let article = if isFatal: "A fatal crash" else: "An error"
-    let suspectedLine = if procobj.ProcessState.ProgramCounter >= procobj.ProcessState.RunningProcessString.len: "<eof>" else: procobj.ProcessState.RunningProcessString[procobj.ProcessState.ProgramCounter]
-    echo(fmt"{article} has been triggered.{'\n'}{crashType} Trace{'\n'}{'\n'}{'\n'}General{'\n'}Occured at: {suspectedLine}{'\n'}Crash reason: {err.msg}{'\n'}Crash type: {errCode} {groupName}.{err.name}{'\n'}{'\n'}Program{'\n'}Name: {procobj.Name}{'\n'}Id: {procobj.Id}{'\n'}ProgramCounter: {$procobj.ProcessState.ProgramCounter}")
+        echo(formatted & "\n")
+        if e.Context.ErrSeverity == ErrorApi.SysError.ErrorSeverity.Fatal:
+            echo("vm")
+            echo(vmToString(procobj))
+            echo("\nproc")
+            echo(procobj.Name & ":" & $procobj.Id & ", " & $e.Context.ErrPC)
+    if e.Context.ErrSeverity == ErrorApi.SysError.ErrorSeverity.Fatal:
+        procobj.ProcessState.IsRunning = false
+        echo("\nPress Enter to exit.")
+        waitforenter()
+    elif e.Context.ErrSeverity == ErrorApi.SysError.ErrorSeverity.Error:
+        if constants.DEBUG_MODE:
+            procobj.ProcessState.IsRunning = false
+            echo("\nPress Enter to continue execution. However, please note that things may not go expected.")
+            waitforenter()
+            procobj.ProcessState.IsRunning = true
 
 proc ResolveOperand(token: string, procobj: ProcApi.ProcTypes.ProcessObject): string =
     if token.len >= 2 and token[0] == 'x':
         let regNum = parseInt(token[1..^1])
 
         if regNum < 0 or regNum >= ProcApi.ProcTypes.VM_SIZE:
-            raise newException(BINERRC.OutOfBounds, "exceeded confined space of CPU VM array")
+            ErrorApi.ThrowError(ErrorApi.newerr("register index out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
 
         return $procobj.ProcessState.Vm[regNum]
 
@@ -52,7 +71,7 @@ proc EvaluateInstr(base: string, args: var seq[string], procobj: ProcApi.ProcTyp
     if handler != nil:
         ret = handler(args, procobj)
     else:
-        raise newException(BINERRC.InvalidInstruction, "unknown instruction \"" & base & "\"")
+        ErrorApi.ThrowError(ErrorApi.newerr("unknown instruction \"" & base & "\"", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_NOINSTR))
     return
 
 
@@ -79,32 +98,32 @@ proc tokenizeInstr*(str: string): seq[string] =
         result.add(cur)
 
 proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
-    if DEBUG_MODE and DEBUG_VERBOSE:
+    if constants.DEBUG_MODE and constants.DEBUG_VERBOSE:
         echo("The CPU has been invoked.")
         echo("Program \"" & procobj.Name & "\", ID \"" & $(procobj.Id) & "\".")
     let instructions = exe.split('\n')
-    if DEBUG_MODE:
-        echo("Instructions to run: " & $(instructions.len))
+    if constants.DEBUG_MODE and constants.DEBUG_VERBOSE:
+        echo("Instructions to run: " & $(instructions.len) & "\n")
 
     procobj.ProcessState.RunningProcessString = instructions
 
     while procobj.ProcessState.IsRunning:
         let pc = procobj.ProcessState.ProgramCounter
         if pc >= procobj.ProcessState.RunningProcessString.len:
-            let error = newException(BINERRC.AttemptedExecuteNull, "went beyond program bounds")
-            trace(error, procobj, true)
-            procobj.ProcessState.IsRunning = false
-            break
+            error(ErrorApi.newerr("program counter exceeded program bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_PRGRMEND), procobj)
 
         let instr = procobj.ProcessState.RunningProcessString[pc]
-        if DEBUG_MODE:
-            echo("instr = " & instr)
-            echo("pc = " & $pc)
+        if constants.DEBUG_MODE and constants.DEBUG_VERBOSE:
+            echo("Instruction: " & instr)
+            echo("Program counter: " & $pc)
 
         if instr.len == 0:
-            let error = newException(BINERRC.ImplicitAbsentInstruction, "encountered an empty line")
-            trace(error, procobj, true)
-            procobj.ProcessState.IsRunning = false
+            error(ErrorApi.newerr(
+                "no instruction to execute",
+                ErrorApi.SysError.ErrorSeverity.Fatal,
+                ErrorApi.ErrTypes.CATEGORY_CPU,
+                ErrorApi.ErrTypes.CPU_ABSENTINSTR
+            ), procobj)
             break
 
         
@@ -116,11 +135,11 @@ proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
         let base = tokenized[0]
         var args = tokenized[1..^1]
 
-        if DEBUG_MODE and DEBUG_VERBOSE:
-            echo("Instruction RunningProcessString[" & $pc & "] tokenized.")
-            echo("tokenized = " & $tokenized)
-            echo("base = " & base)
-            echo("args = " & $args)
+        if constants.DEBUG_MODE and constants.DEBUG_VERBOSE:
+            echo("\nInstruction RunningProcessString[" & $pc & "] tokenized.")
+            echo("Token: " & $tokenized)
+            echo("Base: " & base)
+            echo("Arguments: " & $args)
 
         let cur = if procobj.ProcessState.CurrentCustomInstr.len > 0: procobj.ProcessState.CurrentCustomInstr[^1] else: nil
         if cur != nil:
@@ -134,21 +153,14 @@ proc MakeProcess(procobj: ProcApi.ProcTypes.ProcessObject, exe: string): int =
 
         let prevPc = procobj.ProcessState.ProgramCounter
         let prevLen = procobj.ProcessState.RunningProcessString.len
-        if DEBUG_MODE and DEBUG_VERBOSE:
+        if constants.DEBUG_MODE and constants.DEBUG_VERBOSE:
             echo("prevPc, prevLen = " & $prevPc & ", " & $prevLen)
         try:
             if DEBUG_MODE and DEBUG_VERBOSE:
                 echo("Executing instruction \"" & base & "\"...")
             EvaluateInstr(base, args, procobj)
-        except BINERRC.BinaryError as e:
-            if DEBUG_MODE:
-                trace(e, procobj, true)
-            procobj.ProcessState.IsRunning = false
-        except FSERRC.FSError as e:
-            if DEBUG_MODE:
-                trace(e, procobj, e.IsFatal)
-            if e.IsFatal:
-                procobj.ProcessState.IsRunning = false
+        except ErrorApi.SysError.SysError as e:
+            error(e, procobj)
 
         if procobj.ProcessState.ProgramCounter == prevPc:
             if procobj.ProcessState.RunningProcessString.len == prevLen:

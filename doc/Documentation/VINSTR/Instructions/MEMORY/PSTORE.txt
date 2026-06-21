@@ -13,10 +13,7 @@ PSTORE - OPERANDS
         The bottom level of LRAM to specify.
 
 PSTORE - POSSIBLE ERRORS
-    BinaryError.OutOfBounds
-        If highslot or lowslot exceeds the space of LRAM, this will be raised.
-    BinaryError.LimitExceeded
-        If the value to assign is lower than LIM_MINIMUM or higher than LIM_MAXIMUM, this will be raised.
+    placeholder
 
 PSTORE - GOTCHAS
     1.
@@ -29,5 +26,5 @@ PSTORE - EXAMPLES
         HALT
 
 PSTORE - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/MEMORY/LOAD.txt
-    /Documentation/VINSTR/Instructions/built-in/MEMORY/PLOAD.txt
+    /Documentation/VINSTR/Instructions/MEMORY/LOAD.txt
+    /Documentation/VINSTR/Instructions/MEMORY/PLOAD.txt

@@ -8,8 +8,7 @@ SYSCALL - OPERANDS
     SYSCALL has no operands.
 
 SYSCALL - POSSIBLE ERRORS
-    mixed
-        SYSCALL can throw any error.
+    placeholder
 
 SYSCALL - GOTCHAS
     1.
@@ -29,4 +28,10 @@ SYSCALL - EXAMPLES
         HALT
 
 SYSCALL - SEE ALSO
-    /Documentation/VINSTR/Types/SYSCALL-ABI/*
+    /Documentation/VINSTR/Types/SYSCALL-ABI/SYSC_PRINT.txt
+    /Documentation/VINSTR/Types/SYSCALL-ABI/SYSC_READCHR.txt
+    /Documentation/VINSTR/Types/SYSCALL-ABI/SYSC_OPENFILE.txt
+    /Documentation/VINSTR/Types/SYSCALL-ABI/SYSC_CREATEFILE.txt
+    /Documentation/VINSTR/Types/SYSCALL-ABI/SYSC_WRITEFILE.txt
+    /Documentation/VINSTR/Types/SYSCALL-ABI/SYSC_READFILE.txt
+    /Documentation/VINSTR/Types/SYSCALL-ABI/SYSC_CLOSEFD.txt

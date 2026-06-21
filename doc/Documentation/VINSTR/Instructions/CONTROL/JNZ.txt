@@ -11,8 +11,7 @@ JNZ - OPERANDS
         The program counter to jump to.
 
 JNZ - POSSIBLE ERRORS
-    BinaryError.OutOfBounds
-        If the specified register is not in the range of the VM array, this will be raised.
+    placeholder
 
 JNZ - GOTCHAS
     1.

@@ -13,7 +13,7 @@ JEQ - OPERANDS
         The program counter to jump to.
 
 JEQ - POSSIBLE ERRORS
-    JEQ cannot error.
+    placeholder
 
 JEQ - GOTCHAS
     1.

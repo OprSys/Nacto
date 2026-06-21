@@ -1,0 +1,11 @@
+SYSC_CREATEFILE - DESCRIPTION
+    Creates a file in memory.
+
+SYSC_CREATEFILE - NUMBER
+    4
+
+SYSC_CREATEFILE - ARGUMENTS
+    x1 = Length of the path to open.
+    x2 = Highslot to specify where the path is located.
+    x3 = Type of file (see FileTypes in the APIs section to see each available type).
+    x4 = Register number to store file descriptor.

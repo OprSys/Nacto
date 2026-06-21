@@ -8,7 +8,7 @@ NOOP - OPERANDS
     NOOP has no operands.
 
 NOOP - POSSIBLE ERRORS
-    NOOP cannot error.
+    placeholder
 
 NOOP - GOTCHAS
     NOOP has no gotchas.

@@ -1,9 +1,9 @@
 SYSC_PRINT - DESCRIPTION
-    Prints to the screen by specifying a RAM slot.
+    Prints to the screen by specifying an LRAM slot.
 
 SYSC_PRINT - NUMBER
     1
 
 SYSC_PRINT - ARGUMENTS
-    x1 = Specified highslot.
-    x2 = Specified lowslot.
+    x1 = Specified highslot in LRAM.
+    x2 = Specified lowslot in LRAM.

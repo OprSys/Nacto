@@ -1,0 +1,8 @@
+SYSC_CLOSEFD - DESCRIPTION
+    Closes a file descriptor.
+
+SYSC_CLOSEFD - NUMBER
+    7
+
+SYSC_CLOSEFD - ARGUMENTS
+    x1 = File descriptor index to close.

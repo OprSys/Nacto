@@ -1,0 +1,11 @@
+SYSC_READFILE - DESCRIPTION
+    Reads a character from a file at the specified position, using a file descriptor, and puts the result as an ASCII code to LRAM.
+
+SYSC_READFILE - NUMBER
+    6
+
+SYSC_READFILE - ARGUMENTS
+    x1 = Specified highslot to store the character into.
+    x2 = Specified lowslot to store the character into.
+    x3 = File descriptor.
+    x4 = Position index in the file to read from.

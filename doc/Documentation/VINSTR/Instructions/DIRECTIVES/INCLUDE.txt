@@ -9,10 +9,7 @@ INCLUDE - OPERANDS
         The file to include into the running program.
 
 INCLUDE - POSSIBLE ERRORS
-    FSError.NoPath
-        If the provided path does not exist, this is raised.
-    FSError.InvalidCDOType
-        If the provided path is a directory or not an includable file, this is raised.
+    placeholder
 
 INCLUDE - GOTCHAS
     1.
@@ -21,10 +18,10 @@ INCLUDE - GOTCHAS
 INCLUDE - EXAMPLES
     1.
         - Bring in the `io` lib.
-        INCLUDE /incl/io
-        - Use IO_PRINTCHAR (from /incl/io), with ASCII = 65. Prints 'A'.
+        INCLUDE /INCL/IO
+        - Use IO_PRINTCHAR (from /INCL/IO), with ASCII = 65. Prints 'A'.
         ICALL IO_PRINTCHAR ASCII:65
         HALT
 
 INCLUDE - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/DIRECTIVES/ICALL.txt
+    /Documentation/VINSTR/Instructions/DIRECTIVES/ICALL.txt

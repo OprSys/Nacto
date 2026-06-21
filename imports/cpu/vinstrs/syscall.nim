@@ -13,16 +13,16 @@ const SYSC_WRITEFILE* = 5
 const SYSC_READFILE* = 6
 const SYSC_CLOSEFD* = 7
 
-import cpu/errors/all as BINERRC
-import fs/errors/all as FSERRC
 import cpu/types/limits as LIMITS
 import cpu/types/ascii as ASCII
 import fs/fsapi as FsApi
 import hardware/disk as NactoDisk
 
+import error/errorapi as ErrorApi
+
 proc LRAMGET(len: int, highslot: int, procobj: ProcApi.ProcTypes.ProcessObject): string =
     if len < 0 or len >= ProcApi.ProcTypes.LOW:
-        raise newException(BINERRC.OutOfBounds, $len & " is not in the range of 0 to " & $(ProcApi.ProcTypes.LOW - 1))
+        ErrorApi.ThrowError(ErrorApi.newerr("LRAMGET length out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
 
     var ret = ""
     for i in 0..<len:
@@ -32,9 +32,9 @@ proc LRAMGET(len: int, highslot: int, procobj: ProcApi.ProcTypes.ProcessObject):
 
 proc LRAMGETSECT(highslot: int, lowslot: int, procobj: ProcApi.ProcTypes.ProcessObject): int =
     if highslot < 0 or highslot >= ProcApi.ProcTypes.HIGH:
-        raise newException(BINERRC.OutOfBounds, $highslot & " is not in the range of 0 to " & $(ProcApi.ProcTypes.HIGH - 1))
+        ErrorApi.ThrowError(ErrorApi.newerr("LRAM high slot out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
     if lowslot < 0 or lowslot >= ProcApi.ProcTypes.LOW:
-        raise newException(BINERRC.OutOfBounds, $lowslot & " is not in the range of 0 to " & $(ProcApi.ProcTypes.LOW - 1))
+        ErrorApi.ThrowError(ErrorApi.newerr("LRAM low slot out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
     return procobj.ProcessState.LRAM[highslot][lowslot]
 
 proc GETENTRYBYFD(fd: int, procobj: ProcApi.ProcTypes.ProcessObject): ProcApi.ProcTypes.OpenFileEntry =
@@ -58,10 +58,10 @@ proc OPENFILE(len: int, highslot: int, fdto: int, procobj: ProcApi.ProcTypes.Pro
     let resolved = FsApi.ResolvePath(path)
 
     if resolved == nil:
-        raise newException(FSERRC.NoPath, "requested CoreDataObject not found \"" & path & "\"")
+        ErrorApi.ThrowError(ErrorApi.newerr("file not found", ErrorApi.SysError.ErrorSeverity.Error, ErrorApi.ErrTypes.CATEGORY_FS, ErrorApi.ErrTypes.FS_NOPATH))
     
     if resolved of NactoDisk.DiskTypes.Directory:
-        raise newException(FSERRC.InvalidCDOType, "requested CoreDataObject is of a Directory, but was expected to be a File")
+        ErrorApi.ThrowError(ErrorApi.newerr("cannot open a directory as a file", ErrorApi.SysError.ErrorSeverity.Error, ErrorApi.ErrTypes.CATEGORY_FS, ErrorApi.ErrTypes.FS_INVCDO))
 
     var fileEntry = ProcApi.ProcTypes.OpenFileEntry()
     fileEntry.File = NactoDisk.DiskTypes.File(resolved)
@@ -103,31 +103,31 @@ proc WRITEFILE(highslot: int, lowslot: int, fd: int, idx: int, procobj: ProcApi.
     if fd < procobj.ProcessState.FileDescriptors.len and procobj.ProcessState.FileDescriptors[fd] != nil:
         let file = procobj.ProcessState.FileDescriptors[fd].File
         if idx < 0 or idx > file.Data.len:
-            raise newException(BINERRC.InvalidIndex, "[" & $idx & "][" & $file.Data.len & "] is not a valid index")
+            ErrorApi.ThrowError(ErrorApi.newerr("file write index out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_INVIDX))
         if idx == file.Data.len:
             file.Data.add(character)
         else:
             file.Data[idx] = character
     else:
-        raise newException(BINERRC.InvalidIndex, "requested OpenFileEntry (using file descriptor) does not exist \"" & $fd & "\"")
+        ErrorApi.ThrowError(ErrorApi.newerr("invalid file descriptor for write", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_INVIDX))
     return 0
 
 proc READFILE(highslot: int, lowslot: int, fd: int, idx: int, procobj: ProcApi.ProcTypes.ProcessObject): int =
     if fd < procobj.ProcessState.FileDescriptors.len and procobj.ProcessState.FileDescriptors[fd] != nil:
         let file = procobj.ProcessState.FileDescriptors[fd].File
         if idx < 0 or idx >= file.Data.len:
-            raise newException(BINERRC.InvalidIndex, "[" & $idx & "][" & $file.Data.len & "] is not a valid index")
+            ErrorApi.ThrowError(ErrorApi.newerr("file read index out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_INVIDX))
         let character = ASCII.ToCode(file.Data[idx])
         procobj.ProcessState.LRAM[highslot][lowslot] = character
     else:
-        raise newException(BINERRC.InvalidIndex, "requested OpenFileEntry (using file descriptor) does not exist \"" & $fd & "\"")
+        ErrorApi.ThrowError(ErrorApi.newerr("invalid file descriptor for read", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_INVIDX))
     return 0
 
 proc CLOSEFD(fd: int, procobj: ProcApi.ProcTypes.ProcessObject): int =
     if fd < procobj.ProcessState.FileDescriptors.len and procobj.ProcessState.FileDescriptors[fd] != nil:
         procobj.ProcessState.FileDescriptors[fd] = nil
     else:
-        raise newException(BINERRC.InvalidIndex, "requested OpenFileEntry (using file descriptor) does not exist \"" & $fd & "\"")
+        ErrorApi.ThrowError(ErrorApi.newerr("invalid file descriptor for close", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_INVIDX))
     return 0
 
 proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int =

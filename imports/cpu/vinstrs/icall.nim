@@ -3,7 +3,7 @@ import std/tables
 
 import process/procapi as ProcApi
 import cpu/vinstr_registry
-import cpu/errors/all as BINERRC
+import error/errorapi as ErrorApi
 
 proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int =
     let uinstr = args[0]
@@ -11,7 +11,7 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
 
     let customInstr = procobj.ProcessState.CustomInstrs.getOrDefault(uinstr)
     if customInstr == nil:
-        raise newException(BINERRC.InvalidInstruction, "unknown custom instruction \"" & uinstr & "\"")
+        ErrorApi.ThrowError(ErrorApi.newerr("custom instruction \"" & uinstr & "\" not defined", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_NOINSTR))
 
     procobj.ProcessState.ReturnBack.add(procobj.ProcessState.ProgramCounter + 1)
     procobj.ProcessState.CurrentCustomInstr.add(customInstr)
@@ -24,7 +24,7 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
             let regNum = parseInt(argValue[1..^1])
 
             if regNum < 0 or regNum >= ProcApi.ProcTypes.VM_SIZE:
-                raise newException(BINERRC.OutOfBounds, "exceeded confined space of CPU VM array")
+                ErrorApi.ThrowError(ErrorApi.newerr("register index out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
 
             argValue = $procobj.ProcessState.Vm[regNum]
         for argDef in customInstr.Arguments:

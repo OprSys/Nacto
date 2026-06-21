@@ -11,10 +11,7 @@ SETVAL - OPERANDS
         The value (an integer) to give to the specified register (reg).
 
 SETVAL - POSSIBLE ERRORS
-    BinaryError.OutOfBounds
-        If the specified register is not in the range of the VM array, this will be raised.
-    BinaryError.LimitExceeded
-        If the value to assign is lower than LIM_MINIMUM or higher than LIM_MAXIMUM, this will be raised.
+    placeholder
 
 SETVAL - GOTCHAS
     1.
@@ -32,4 +29,4 @@ SETVAL - EXAMPLES
         HALT
 
 SETVAL - SEE ALSO
-    /Documentation/VINSTR/instructions/built-in/CONTROL/HALT.txt
+    /Documentation/VINSTR/Instructions/CONTROL/HALT.txt

@@ -13,10 +13,7 @@ STORE - OPERANDS
         The bottom level of RAM to specify.
 
 STORE - POSSIBLE ERRORS
-    BinaryError.OutOfBounds
-        If highslot or lowslot exceeds the space of RAM, this will be raised.
-    BinaryError.LimitExceeded
-        If the value to assign is lower than LIM_MINIMUM or higher than LIM_MAXIMUM, this will be raised.
+    placeholder
 
 STORE - GOTCHAS
     1.
@@ -29,4 +26,4 @@ STORE - EXAMPLES
         HALT
 
 STORE - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/MEMORY/LOAD.txt
+    /Documentation/VINSTR/Instructions/MEMORY/LOAD.txt

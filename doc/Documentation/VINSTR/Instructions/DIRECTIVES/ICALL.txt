@@ -11,10 +11,7 @@ ICALL - OPERANDS
         Optional arguments for the custom instruction. Each argument is given in the form ARGUMENTNAME:VALUE. The VALUE can be both a literal integer, or a register value using X Notation.
 
 ICALL - POSSIBLE ERRORS
-    BinaryError.InvalidInstruction
-        If the given instruction name does not match any previously defined custom instruction, this is raised.
-    BinaryError.OutOfBounds
-        If an invalid register is given, this is raised.
+    placeholder
 
 ICALL - GOTCHAS
     1.
@@ -24,4 +21,4 @@ ICALL - EXAMPLES
     No examples to show (mostly already provided in IDEF documentation).
 
 ICALL - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/DIRECTIVES/IDEF.txt
+    /Documentation/VINSTR/Instructions/DIRECTIVES/IDEF.txt

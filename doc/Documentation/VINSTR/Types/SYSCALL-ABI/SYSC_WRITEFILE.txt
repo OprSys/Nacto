@@ -1,0 +1,11 @@
+SYSC_WRITEFILE - DESCRIPTION
+    Writes a character to a file at the specified position, using a file descriptor.
+
+SYSC_WRITEFILE - NUMBER
+    5
+
+SYSC_WRITEFILE - ARGUMENTS
+    x1 = Specified highslot.
+    x2 = Specified lowslot (the character to write).
+    x3 = File descriptor.
+    x4 = Position index in the file. Appends if equal to file length.

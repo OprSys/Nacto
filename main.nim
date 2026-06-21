@@ -66,6 +66,7 @@ proc loadInitramfs(): bool =
 
 if loadInitramfs() == false:
     echo("error")
+    quit(1)
 CreateSimulationDataFolder()
 var savedata = Nacto.FsApi.SaveRoot(Nacto.NactoDisk.get_root())
 writeFile(ROOTFS_PATH, $savedata)

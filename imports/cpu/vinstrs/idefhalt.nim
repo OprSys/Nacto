@@ -1,11 +1,10 @@
 import process/procapi as ProcApi
 import cpu/vinstr_registry
-
-import cpu/errors/all as BINERRC
+import error/errorapi as ErrorApi
 
 proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int =
     if procobj.ProcessState.ReturnBack.len == 0:
-        raise newException(BINERRC.InvalidInstruction, "unknown instruction \"IEND\"")
+        ErrorApi.ThrowError(ErrorApi.newerr("IEND with no matching ICALL", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_NOINSTR))
     let retAddr = procobj.ProcessState.ReturnBack.pop()
     discard procobj.ProcessState.CurrentCustomInstr.pop()
     discard vinstr_registry.lookup("JMP")(@[$retAddr], procobj)

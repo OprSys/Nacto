@@ -13,12 +13,7 @@ DIV - OPERANDS
         The second number in use for the operation.
 
 DIV - POSSIBLE ERRORS
-    BinaryError.OutOfBounds
-        If the specified register is not in the range of the VM array, this will be raised.
-    BinaryError.LimitExceeded
-        If the result to assign is lower than LIM_MINIMUM or higher than LIM_MAXIMUM, this will be raised.
-    BinaryError.DivisionByZero
-        If val2 is zero, this is raised. You cannot divide by zero.
+    placeholder
 
 DIV - GOTCHAS
     1.
@@ -41,4 +36,4 @@ DIV - EXAMPLES
         HALT
 
 DIV - SEE ALSO
-    /Documentation/VINSTR/Instructions/built-in/ARITHMETIC/SETVAL.txt
+    /Documentation/VINSTR/Instructions/ARITHMETIC/SETVAL.txt

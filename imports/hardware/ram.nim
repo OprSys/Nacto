@@ -1,5 +1,3 @@
-import cpu/errors/all as BINERRC
-
 const HIGH* = 32
 const LOW* = 512
 
@@ -10,13 +8,13 @@ type
 var internal_shared_state = RandomAccessMemory()
 var RAM* = internal_shared_state
 
+import error/errorapi as ErrorApi
+
 proc GetAddr*(highslot: int, lowslot: int): int =
     if highslot < 0 or highslot >= HIGH:
-        let HIGHl = HIGH - 1
-        raise newException(BINERRC.OutOfBounds, "RAM high-level slot " & $highslot & " is not in the range of 0 to " & $HIGHl)
+        ErrorApi.ThrowError(ErrorApi.newerr("RAM high-level slot out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
     if lowslot < 0 or lowslot >= LOW:
-        let LOWl = LOW - 1
-        raise newException(BINERRC.OutOfBounds, "RAM low-level slot " & $lowslot & " is not in the range of 0 to " & $LOWl)
+        ErrorApi.ThrowError(ErrorApi.newerr("RAM low-level slot out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
     return RAM.Reg[highslot][lowslot]
 
 proc ReadRange*(highslot: int, low_start: int, low_end: int): seq[int] =
@@ -26,9 +24,7 @@ proc ReadRange*(highslot: int, low_start: int, low_end: int): seq[int] =
 
 proc SetAddr*(highslot: int, lowslot: int, value: int): void =
     if highslot < 0 or highslot >= HIGH:
-        let HIGHl = HIGH - 1
-        raise newException(BINERRC.OutOfBounds, "RAM high-level slot " & $highslot & " is not in the range of 0 to " & $HIGHl)
+        ErrorApi.ThrowError(ErrorApi.newerr("RAM high-level slot out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
     if lowslot < 0 or lowslot >= LOW:
-        let LOWl = LOW - 1
-        raise newException(BINERRC.OutOfBounds, "RAM low-level slot " & $lowslot & " is not in the range of 0 to " & $LOWl)
+        ErrorApi.ThrowError(ErrorApi.newerr("RAM low-level slot out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
     RAM.Reg[highslot][lowslot] = value

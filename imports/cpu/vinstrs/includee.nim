@@ -4,8 +4,8 @@ import process/procapi as ProcApi
 import fs/fsapi as FsApi
 import cpu/vinstr_registry
 
-import fs/errors/all as FSERRC
 import hardware/disk as NactoDisk
+import error/errorapi as ErrorApi
 
 proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int =
     let libfilesource = args[0]
@@ -13,15 +13,13 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
     let file = FsApi.ResolvePath(libfilesource)
     
     if file == nil:
-        raise newException(FSERRC.NoPath, "requested CoreDataObject not found \"" & libfilesource & "\"")
+        ErrorApi.ThrowError(ErrorApi.newerr("include file not found", ErrorApi.SysError.ErrorSeverity.Error, ErrorApi.ErrTypes.CATEGORY_FS, ErrorApi.ErrTypes.FS_NOPATH))
 
     if file of NactoDisk.DiskTypes.Directory:
-        raise newException(FSERRC.InvalidCDOType, "requested CoreDataObject is of a Directory, but was expected to be a File")
+        ErrorApi.ThrowError(ErrorApi.newerr("cannot include a directory", ErrorApi.SysError.ErrorSeverity.Error, ErrorApi.ErrTypes.CATEGORY_FS, ErrorApi.ErrTypes.FS_INVCDO))
     let f = cast[NactoDisk.DiskTypes.File](file)
     if f.FileType != NactoDisk.DiskTypes.FT.ImportableBinary:
-        var inclfile = NactoDisk.DiskTypes.File()
-        inclfile.FileType = NactoDisk.DiskTypes.FT.ImportableBinary
-        raise newException(FSERRC.InvalidCDOType, "requested CoreDataObject is of \"" & f.GetFileType() & "\", but was expected to a \"" & inclfile.GetFileType() & "\"")
+        ErrorApi.ThrowError(ErrorApi.newerr("file is not an importable binary", ErrorApi.SysError.ErrorSeverity.Error, ErrorApi.ErrTypes.CATEGORY_FS, ErrorApi.ErrTypes.FS_INVCDO))
     
     let data = FsApi.ReadFile(libfilesource).split('\n')
     var insertPos = procobj.ProcessState.ProgramCounter

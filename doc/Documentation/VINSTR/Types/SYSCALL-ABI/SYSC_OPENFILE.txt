@@ -1,0 +1,10 @@
+SYSC_OPENFILE - DESCRIPTION
+    Opens a file via path and creates a file descriptor for it.
+
+SYSC_OPENFILE - NUMBER
+    3
+
+SYSC_OPENFILE - ARGUMENTS
+    x1 = Length of the path to open.
+    x2 = Highslot to specify where the path is located.
+    x3 = Register number to store file descriptor.
