@@ -1,0 +1,24 @@
+Changelog File
+
+Flags
+    How to read each update.
+
+    Update types
+        MAJOR: This update has introduced changes that add/remove/alter important/general APIs and/or VINSTR programs and/or documentation.
+        SUBMAJOR: This update has introduced changes that add/remove/alter general APIs and/or VINSTR programs and/or documentatino.
+        MINOR: This update has introduced changes that alter general/minor APIs and/or VINSTR programs and/or documentation.
+        SUBMINOR: This update has introduced very minimal changes.
+        BUGFIX: This update has fixed unexpected behavior.
+
+    Update entry types
+        ADDED: This has been added.
+        REMOVED: This has been removed.
+        ALTERED: This has been changed.
+
+Changelog
+    Every update, ranging from the present to 10 updates ago. Highest is newer.
+
+
+    prior_vers - SUBMINOR
+        Changelog file (/changelog.txt) - ADDED
+            | The very file you're looking at!
