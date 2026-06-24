@@ -28,3 +28,4 @@ Nacto's user-facing side (i.e., what *you* see in the simulation) is meant to be
 
 ## 4. Disclaimer
 Nacto is highly unstable. It currently, as of now, ***has no version.*** Nacto is still in-development, and the ABI for it has barely been made.
+Nacto will ever only support Windows and Linux. It will NOT support any other platforms. Please note that Nacto is primarily tested on Linux, so Windows behavior is not well documented.
