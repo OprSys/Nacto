@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
+BUILD_MODE="debug"
+
 PROJECT_NAME="nacto"
 MAIN_FILE="main.nim"
 OUTPUT_DIR="bin"
@@ -30,7 +32,7 @@ esac
 mkdir -p "$OUTPUT_DIR"
 
 echo "Compiling $PROJECT_NAME for $TARGET..."
-nim c $NIM_OS --out:"$OUTPUT_DIR/$PROJECT_NAME$EXT" --path:"imports" --hints:on --warnings:on "$MAIN_FILE"
+nim c $NIM_OS --out:"$OUTPUT_DIR/$PROJECT_NAME$EXT" --path:"imports" --hints:on -d:$BUILD_MODE --warnings:on "$MAIN_FILE"
 
 cp -r "initramfs" "$OUTPUT_DIR/initramfs"
 
