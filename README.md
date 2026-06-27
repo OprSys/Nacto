@@ -13,7 +13,7 @@
 ---
 
 ## 1. What is Nacto?
-Nacto (formally OprSys Nacto) is a simulated computer made in the Mim programming language. It has a scheduler, a custom assembly-like programming language called VINSTR (vee-in-stur), virtual filesystem, and documentation.
+Nacto (formally OprSys Nacto) is a simulated computer made in the Nim programming language. It has a scheduler, a custom assembly-like programming language called VINSTR (vee-in-stur), virtual filesystem, and documentation.
 
 ---
 
