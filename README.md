@@ -4,28 +4,34 @@
 ---
 
 ## Table of Contents
-1. What is Nacto?
-2. Why does Nacto exist?
-3. Nacto's philosophy
-4. Disclaimer
+1. [What is Nacto?](#1-what-is-nacto)
+2. [Why Nim?](#2-why-nim)
+3. [Why does Nacto exist?](#3-why-does-nacto-exist)
+4. [Nacto's philosophy](#4-nactos-philosophy)
+5. [Disclaimer](#5-disclaimer)
 
 ---
 
 ## 1. What is Nacto?
-Nacto, or the full naming, OprSys Nacto, is a simulated operating system environment, which takes a UNIX-like approach. Nacto is not a real operating system, but a simulator.
+Nacto (formally OprSys Nacto) is a simulated computer made in the Mim programming language. It has a scheduler, a custom assembly-like programming language called VINSTR (vee-in-stur), virtual filesystem, and documentation.
 
 ---
 
-## 2. Why does Nacto exist?
-Nacto is a hobby project. It exists for entertainment, to show OS concepts, and simply enjoyment to make and develop.
+## 2. Why Nim?
+You may wonder, why is Nacto implemented in Nim, instead of something like C or even Rust? Nacto's entire purpose is to build a community, not really meant to "be a challenge." Also, another simple answer is C is... well, not easy to make things in. I'd rather have fun than.. use C.
 
 ---
 
-## 3. Nacto's philosophy
-Nacto's user-facing side (i.e., what *you* see in the simulation) is meant to be realistic according to real low-level computers. That means, that any mistake can be fatal. Nacto is designed to be somewhat difficult to use. It will not hold your hand, akin to how Arch won't either.
+## 3. Why does Nacto exist?
+Nacto is a hobby project. It exists purely for people to use, to be somewhat educational, and to build a community.
 
 ---
 
-## 4. Disclaimer
-Nacto is highly unstable. It currently, as of now, ***has no version.*** Nacto is still in-development, and the ABI for it has barely been made.
+## 4. Nacto's philosophy
+Nacto's programming language, VINSTR, is meant to be literal binary. Of course, it isn't actual binary, or even some numbered-approach to binary. Instead, it uses something closer to assembly. Why? Manually writing numbers isn't fun. Manually writing a form of assembly *is*....atleast to me.
+
+---
+
+## 5. Disclaimer
+Nacto is versionless. A specific versioning system is planned, and it will NOT follow MINOR.MAJOR.PATCH, though will follow a similar pattern.
 Nacto will ever only support Windows and Linux. It will NOT support any other platforms. Please note that Nacto is primarily tested on Linux, so Windows behavior is not well documented.
