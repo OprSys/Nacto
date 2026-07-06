@@ -7,7 +7,7 @@ import hardware/ram as RAM
 import process/procapi as ProcApi
 import error/errorapi as ErrorApi
 import process/scheduler as NactoSced
-import process/executer as NactoExec
+import process/executor as NactoExec
 
 export CpuApi
 export FsApi

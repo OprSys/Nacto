@@ -31,8 +31,8 @@ Changelog
             | Now required to use a labeling system. `PRIOR` is the initial label.
             | For more info, refer to `/doc/documentation`.
         /imports/process/scheduler.nim:32-39 - REMOVED
-            | Now in use for the `executer.nim` file.
-        /imports/process/executer.nim - ADDED
+            | Now in use for the `executor.nim` file.
+        /imports/process/executor.nim - ADDED
             | Central executer for executables and binaries.
         ProcApi - ALTERED
             | The process API has gotten a full overhaul.
