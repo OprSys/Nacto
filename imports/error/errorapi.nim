@@ -1,12 +1,10 @@
-import error/types/syserr as SysError
+import error/types/syserr as SysErr
 import error/types/errtypes as ErrTypes
-export SysError
+export SysErr
 export ErrTypes
 
-import system/constants
-
-proc newerr*(reason: string, severity: SysError.ErrorSeverity, category: int, kind: int): ref SysError.SysError =
-    var context = SysError.ErrorContext()
+proc newerr*(reason: string, severity: SysErr.ErrorSeverity, category: int, kind: int): ref SysErr.SysError =
+    var context = SysErr.ErrorContext()
     context.ErrSeverity = severity
     context.ErrCategory = category
     context.ErrKind = kind
@@ -17,16 +15,16 @@ proc newerr*(reason: string, severity: SysError.ErrorSeverity, category: int, ki
     result.Context = context
 
 
-proc format*(error: ref SysError.SysError, alsousehumanreadablestring: bool): string =
+proc format*(error: ref SysErr.SysError, alsousehumanreadablestring: bool): string =
     var severitystr: string
     var reasonstr: string
     var errcodestr: string
     var errpcstring: string
     errpcstring = $error.Context.ErrPC
     case error.Context.ErrSeverity
-    of SysError.ErrorSeverity.Error:
+    of SysErr.ErrorSeverity.Error:
         severitystr = "ERROR"
-    of SysError.ErrorSeverity.Fatal:
+    of SysErr.ErrorSeverity.Fatal:
         severitystr = "FATAL"
     else:
         severitystr = "UNK"
@@ -37,5 +35,5 @@ proc format*(error: ref SysError.SysError, alsousehumanreadablestring: bool): st
     errcodestr = $error.Context.ErrCategory & ";" & $error.Context.ErrKind
     result = "[" & severitystr & "] " & errcodestr & "\n" & reasonstr
 
-proc ThrowError*(error: ref SysError.SysError): void =
+proc ThrowError*(error: ref SysErr.SysError): void =
     raise error

@@ -1,0 +1,21 @@
+NOOP - DESCRIPTION
+    An instruction that does nothing. Usually used for comments.
+
+NOOP - SYNTAX
+    -
+
+NOOP - OPERANDS
+    NOOP has no operands.
+
+NOOP - POSSIBLE ERRORS
+    NOOP does not throw any errors.
+
+NOOP - GOTCHAS
+    NOOP has no gotchas.
+
+NOOP - EXAMPLES
+    1.
+        - This is a comment.
+
+NOOP - SEE ALSO
+    N/A

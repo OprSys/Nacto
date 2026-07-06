@@ -6,7 +6,8 @@ import hardware/disk as NactoDisk
 import hardware/ram as RAM
 import process/procapi as ProcApi
 import error/errorapi as ErrorApi
-import w/exec
+import process/scheduler as NactoSced
+import process/executer as NactoExec
 
 export CpuApi
 export FsApi
@@ -14,4 +15,5 @@ export NactoDisk
 export RAM
 export ProcApi
 export ErrorApi
-export exec
+export NactoSced
+export NactoExec

@@ -1,6 +1,8 @@
+# Nacto bootloader.
 import std/os
 import std/strutils
 import std/json
+
 import system/nacto as Nacto
 
 const ROOTFS_PATH: string = "sim/rootfs.json"
@@ -70,4 +72,12 @@ if loadInitramfs() == false:
 CreateSimulationDataFolder()
 var savedata = Nacto.FsApi.SaveRoot(Nacto.NactoDisk.get_root())
 writeFile(ROOTFS_PATH, $savedata)
-Nacto.exec.ExecuteBinaryAtPath("/BOOT/BOOTMASTERINIT")
+when defined(linux):
+    import posix/termios
+    var term: Termios
+    discard tcgetattr(0, addr(term))
+    term.c_lflag = term.c_lflag and not (ECHO or ICANON)
+    discard tcsetattr(0, TCSANOW, addr(term))
+Nacto.NactoExec.ExecuteBinaryAtPath("/BOOT/BOOTMASTERINIT")
+##Nacto.NactoExec.ExecuteBinaryAtPath("/BIN/LOWOUPS")
+Nacto.NactoSced.RunScheduler()

@@ -9,6 +9,11 @@ const CPU_INVSYN* = 5       # Invalid syntax
 const CPU_PRGRMEND* = 6     # Went beyond program bounds or no HALT
 const CPU_OOB* = 7          # Out of bounds
 const CPU_LIMEXC* = 8       # Value not in LIM_MINIMUM-LIM_MAXIMUM
+const CPU_NOLBL* = 9        # No such label
+const CPU_NOPRIMLBL* = 10   # No `PRIOR` label
+const CPU_NOSTARTLBL* = 11  # No `MAIN` label
+const CPU_NOENDLBL* = 12    # Label missing end marker
+const CPU_NOPRIORGO* = 13   # No prior GO instruction executed
 
 const FS_NOPATH* = 1        # No such file or directory
 const FS_INVCDO* = 2        # Invalid CoreDataObject or file type

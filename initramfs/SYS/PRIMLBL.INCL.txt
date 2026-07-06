@@ -1,0 +1,4 @@
+@PRIOR
+GO MAIN
+HALT
+@\

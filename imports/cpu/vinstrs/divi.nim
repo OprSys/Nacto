@@ -14,7 +14,7 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
     let n2int = parseInt(n2)
 
     if n2int == 0:
-        ErrorApi.ThrowError(ErrorApi.newerr("division by zero", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_DIVBYZERO))
+        ErrorApi.ThrowError(ErrorApi.newerr("division by zero", ErrorApi.SysErr.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_DIVBYZERO))
     let answer = n1int div n2int
 
     discard vinstr_registry.lookup("SETVAL")(@[reg, $answer], procobj)

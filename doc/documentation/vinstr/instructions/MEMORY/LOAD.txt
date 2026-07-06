@@ -1,0 +1,32 @@
+LOAD - DESCRIPTION
+    Loads a value from RAM.
+
+LOAD - SYNTAX
+    LOAD <reg> <highslot> <lowslot>
+
+LOAD - OPERANDS
+    reg
+        The register to load from RAM.
+    highslot
+        The top level of RAM to specify.
+    lowslot
+        The bottom level of RAM to specify.
+
+LOAD - POSSIBLE ERRORS
+    1;8 - CPU_LIMEXC
+        Register value exceeds allowed limits.
+
+LOAD - GOTCHAS
+    1.
+        Note that RAM slots are accessed as 0-indices.
+
+LOAD - EXAMPLES
+    1.
+        - Loads RAM[0][0] (being 45) into register 0.
+        STORE 45 0 0
+        LOAD 0 0 0
+        HALT
+
+LOAD - SEE ALSO
+    /doc/documentation/vinstr/instructions/MEMORY/STORE.txt
+    /doc/documentation/vinstr/instructions/ARITHMETIC/SETVAL.txt

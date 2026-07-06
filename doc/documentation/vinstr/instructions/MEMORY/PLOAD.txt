@@ -1,0 +1,33 @@
+PLOAD - DESCRIPTION
+    Loads a value from LRAM.
+
+PLOAD - SYNTAX
+    PLOAD <reg> <highslot> <lowslot>
+
+PLOAD - OPERANDS
+    reg
+        The register to assign from LRAM.
+    highslot
+        The top level of LRAM to specify.
+    lowslot
+        The bottom level of LRAM to specify.
+
+PLOAD - POSSIBLE ERRORS
+    1;8 - CPU_LIMEXC
+        Register value exceeds allowed limits.
+
+PLOAD - GOTCHAS
+    1.
+        Note that LRAM slots are accessed as 0-indices.
+
+PLOAD - EXAMPLES
+    1.
+        - Loads LRAM[0][0] (being 45) into register 0.
+        PSTORE 45 0 0
+        PLOAD 0 0 0
+        HALT
+
+PLOAD - SEE ALSO
+    /doc/documentation/vinstr/instructions/MEMORY/STORE.txt
+    /doc/documentation/vinstr/instructions/ARITHMETIC/SETVAL.txt
+    /doc/documentation/vinstr/instructions/MEMORY/PSTORE.txt

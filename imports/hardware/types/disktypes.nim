@@ -28,11 +28,13 @@ method GetFileType*(self: File): string =
     of FT.FileTypes.Text:
         return "TXT"
     of FT.FileTypes.Binary:
-        return "EXE"
+        return "BIN"
     of FT.FileTypes.Invalid:
         return "INV"
     of FT.FileTypes.ImportableBinary:
         return "INCL"
+    of FT.FileTypes.Executable:
+        return "EXE"
     else:
         return "INV"
 

@@ -1,0 +1,23 @@
+DEBUGPROCDUMP - DESCRIPTION
+    Debug instruction. Prints the entire currently running process to stdout.
+
+DEBUGPROCDUMP - SYNTAX
+    DEBUGPROCDUMP
+
+DEBUGPROCDUMP - OPERANDS
+    DEBUGPROCDUMP does not have any operands.
+
+DEBUGPROCDUMP - POSSIBLE ERRORS
+    DEBUGPROCDUMP does not throw any errors.
+
+DEBUGPROCDUMP - GOTCHAS
+    DEBUGPROCDUMP has no gotchas.
+
+DEBUGPROCDUMP - EXAMPLES
+    No examples to show.
+
+DEBUGPROCDUMP - SEE ALSO
+    /doc/documentation/vinstr/instructions/DEBUG/DEBUGRAMDUMP.txt
+    /doc/documentation/vinstr/instructions/DEBUG/DEBUGFDSDUMP.txt
+    /doc/documentation/vinstr/instructions/DEBUG/DEBUGVFSDUMP.txt
+    /doc/documentation/vinstr/instructions/DEBUG/DEBUGVMREGDUMP.txt

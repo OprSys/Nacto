@@ -1,0 +1,40 @@
+MUL - DESCRIPTION
+    Takes two values, multiplies them, then assigns the result to a register.
+
+MUL - SYNTAX
+    MUL <reg to put result> <val1> <val2>
+
+MUL - OPERANDS
+    reg to put result
+        The specified register to store the result.
+    val1
+        The first number in use for the operation.
+    val2
+        The second number in use for the operation.
+
+MUL - POSSIBLE ERRORS
+    1;7 - CPU_OOB
+        Register index out of bounds.
+    1;8 - CPU_LIMEXC
+        Value not in LIM_MINIMUM-LIM_MAXIMUM.
+
+MUL - GOTCHAS
+    1.
+        Note that MUL uses the logic of SETVAL internally to set the register value. So, rules for SETVAL also applies to MUL.
+
+MUL - EXAMPLES
+    1.
+        - Multiply using literals, then store in register 0.
+        - Result is 100.
+        MUL 0 10 10
+        HALT
+    2.
+        - Multiply using registers, then store in register 0.
+        - Result is 100.
+        SETVAL 1 10
+        SETVAL 2 10
+        MUL 0 x1 x2
+        HALT
+
+MUL - SEE ALSO
+    /doc/documentation/vinstr/instructions/ARITHMETIC/SETVAL.txt

@@ -1,43 +1,65 @@
-IDEF IO_PRINTCHAR ASCII
+@IO_PRINTCHAR
 - Description: Prints a single character.
-- Param `ASCII`: The ASCII code to print.
+- Param x1: The ASCII code to print.
+PSTORE x1 0 0
 SETVAL 0 1
 SETVAL 1 0
 SETVAL 2 0
-PSTORE $ASCII 0 0
 SYSCALL
-IEND
-- ---
-IDEF IO_GETCHAR TOREGISTER
-- Description: Gets input and puts the ASCII value to a register.
-- Param `TOREGISTER`: The register to put the ASCII value.
+RET
+@\
+
+@IO_GETCHAR
+- Description: Gets input and puts the ASCII value into x0.
+- Return x0: The ASCII value read.
 SETVAL 0 2
 SETVAL 1 0
 SETVAL 2 0
 SYSCALL
-PLOAD $TOREGISTER 0 0
-IEND
-- ---
-IDEF IO_GETSTR HIGHSLOT ECHOBACK
-- Description: Gets input and puts a whole string into a highslot in LRAM.
-- Param `HIGHSLOT`: The highslot to specify.
-- Param `ECHOBACK`: If to print the characters when typed. Useful for security-based input.
-ICALL IO_GETCHAR TOREGISTER:4
-JEQ $ECHOBACK 0 +2
-ICALL IO_PRINTCHAR ASCII:x4
-PSTORE x4 $HIGHSLOT x3
+PLOAD 0 0 0
+RET
+@\
+
+@IO_GETSTR
+- Description: Gets input and stores a string into a highslot in LRAM, up to newline.
+- Param x1: The highslot to store the string into.
+- Param x2: Whether to echo characters when typed. Non-zero to echo.
+- Note: Modifies x3, incremented through the string, left at the position after the last character on return. Tells the length of the string.
+SETVAL 3 0
+SETVAL 5 x1
+SETVAL 6 x2
+SETVAL 3 0
+GO IO_GETCHAR
+SETVAL 7 x0
+JEQ x6 0 +2
+SETVAL 1 x7
+GO IO_PRINTCHAR
+JEQ x7 10 +4
+PSTORE x7 x5 x3
 ADD 3 x3 1
-JEQ x4 10 +2
+JMP -8
+SETVAL 5 0
+SETVAL 6 0
+RET
+@\
+
+@IO_PRINTSTR
+- Description: Prints a full string from a highslot in LRAM.
+- Param x1: The highslot to read from.
+- Param x2: How many characters to print.
+- Note: Modifies x3, incremented through the string, left at the end position on return. Tells the length of the string.
+SETVAL 3 0
+SETVAL 5 x1
+SETVAL 6 x2
+PLOAD 0 x5 x3
+SETVAL 7 x0
+SETVAL 1 x7
+GO IO_PRINTCHAR
+ADD 3 x3 1
+JEQ x3 x6 +2
 JMP -6
-IEND
-- ---
-IDEF IO_PRINTSTR HIGHSLOT LENGTH
-- Description: Prints a full string.
-- Param `HIGHSLOT`: The highslot to read from, to print.
-- Param `LENGTH`: How long the string is expected to be.
-PLOAD 4 $HIGHSLOT x3
-ICALL IO_PRINTCHAR ASCII:x4
-ADD 3 x3 1
-JEQ x3 $LENGTH +2
-JMP -4
-IEND
+SETVAL 5 0
+SETVAL 6 0
+SETVAL 0 0
+RET
+@\

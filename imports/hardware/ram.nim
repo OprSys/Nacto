@@ -12,9 +12,9 @@ import error/errorapi as ErrorApi
 
 proc GetAddr*(highslot: int, lowslot: int): int =
     if highslot < 0 or highslot >= HIGH:
-        ErrorApi.ThrowError(ErrorApi.newerr("RAM high-level slot out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
+        ErrorApi.ThrowError(ErrorApi.newerr("RAM high-level slot out of bounds", ErrorApi.SysErr.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
     if lowslot < 0 or lowslot >= LOW:
-        ErrorApi.ThrowError(ErrorApi.newerr("RAM low-level slot out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
+        ErrorApi.ThrowError(ErrorApi.newerr("RAM low-level slot out of bounds", ErrorApi.SysErr.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
     return RAM.Reg[highslot][lowslot]
 
 proc ReadRange*(highslot: int, low_start: int, low_end: int): seq[int] =
@@ -24,7 +24,7 @@ proc ReadRange*(highslot: int, low_start: int, low_end: int): seq[int] =
 
 proc SetAddr*(highslot: int, lowslot: int, value: int): void =
     if highslot < 0 or highslot >= HIGH:
-        ErrorApi.ThrowError(ErrorApi.newerr("RAM high-level slot out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
+        ErrorApi.ThrowError(ErrorApi.newerr("RAM high-level slot out of bounds", ErrorApi.SysErr.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
     if lowslot < 0 or lowslot >= LOW:
-        ErrorApi.ThrowError(ErrorApi.newerr("RAM low-level slot out of bounds", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
+        ErrorApi.ThrowError(ErrorApi.newerr("RAM low-level slot out of bounds", ErrorApi.SysErr.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_OOB))
     RAM.Reg[highslot][lowslot] = value

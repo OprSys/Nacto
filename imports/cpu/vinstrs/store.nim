@@ -17,7 +17,7 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
     let lowramint = parseInt(lowram)
 
     if valint < LIMITS.LIM_MINIMUM or valint > LIMITS.LIM_MAXIMUM:
-        ErrorApi.ThrowError(ErrorApi.newerr("value exceeds allowed limits", ErrorApi.SysError.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_LIMEXC))
+        ErrorApi.ThrowError(ErrorApi.newerr("value exceeds allowed limits", ErrorApi.SysErr.ErrorSeverity.Fatal, ErrorApi.ErrTypes.CATEGORY_CPU, ErrorApi.ErrTypes.CPU_LIMEXC))
 
     RAM.SetAddr(highramint, lowramint, valint)
     return 0

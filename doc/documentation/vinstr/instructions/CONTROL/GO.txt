@@ -1,0 +1,36 @@
+GO - DESCRIPTION
+    Jumps to a label.
+
+GO - SYNTAX
+    GO <label>
+
+GO - OPERANDS
+    label
+        The specified label to jump to.
+
+GO - POSSIBLE ERRORS
+    1;9 - CPU_NOLBL
+        Unknown label.
+
+GO - GOTCHAS
+    1.
+        When specifiying a label, do NOT prepend it with '@'. The only occurence of '@' is when defining a label, not referencing it.
+        Good: GO MAIN
+        Bad: GO @MAIN
+
+GO - EXAMPLES
+    1.
+        - Go to TEST label.
+        - Result is TEST's positon.
+        @TEST
+        DEBUGVMREGDUMP
+        RET
+        @\
+
+        @PRIOR
+        GO TEST
+        HALT
+        @\
+
+GO - SEE ALSO
+    /doc/documentation/vinstr/instructions/CONTROL/RET.txt

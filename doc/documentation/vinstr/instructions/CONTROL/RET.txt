@@ -1,0 +1,32 @@
+RET - DESCRIPTION
+    Jumps back to a prior GO call.
+
+RET - SYNTAX
+    RET
+
+RET - OPERANDS
+    RET does not have any operands.
+
+RET - POSSIBLE ERRORS
+    1;13 - CPU_NOPRIORGO
+        No prior GO instructions were executed.
+
+RET - GOTCHAS
+    RET has no gotchas.
+
+RET - EXAMPLES
+    1.
+        @PRIOR
+        GO TESTNT
+        HALT
+        @\
+
+        @TESNT
+        DEBUGVMREGDUMP
+        - Return back to when `GO TESTNT` was called, then proceed to HALT (from PRIOR).
+        RET
+        - Don't forget the '@\'
+        @\
+
+RET - SEE ALSO
+    /doc/documentation/vinstr/instructions/CONTROL/GO.txt

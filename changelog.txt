@@ -1,5 +1,7 @@
 Changelog File
 
+(Overall section is a generic message that doesn't cover a specific change.)
+
 Flags
     How to read each update.
 
@@ -7,7 +9,7 @@ Flags
         MAJOR: This update has introduced changes that add/remove/alter important/general APIs and/or VINSTR programs and/or documentation.
         SUBMAJOR: This update has introduced changes that add/remove/alter general APIs and/or VINSTR programs and/or documentatino.
         MINOR: This update has introduced changes that alter general/minor APIs and/or VINSTR programs and/or documentation.
-        SUBMINOR: This update has introduced very minimal changes.
+        SUBMINOR: This update has introduced very minimal changes. Usually doesn't touch source files.
         BUGFIX: This update has fixed unexpected behavior.
 
     Update entry types
@@ -15,10 +17,27 @@ Flags
         REMOVED: This has been removed.
         ALTERED: This has been changed.
 
+Overall
+    The ABI is becoming more mature. An overhaul on how `root` is stored (i.e., partitions), and a user system.
+    Also expect more documentation.
+
 Changelog
     Every update, ranging from the present to 10 updates ago. Highest is newer.
 
 
+    prior_vers - MAJOR
+        VINSTR - ALTERED
+            | Massive engine overhaul.
+            | Now required to use a labeling system. `PRIOR` is the initial label.
+            | For more info, refer to `/doc/documentation`.
+        /imports/process/scheduler.nim:32-39 - REMOVED
+            | Now in use for the `executer.nim` file.
+        /imports/process/executer.nim - ADDED
+            | Central executer for executables and binaries.
+        ProcApi - ALTERED
+            | The process API has gotten a full overhaul.
+            | Prior this, the entire process system was.. completely absent, basically. Now, there's a proper scheduler with an actual process API, more than the old "ProcessObjects in a list." Also, signals have been implemented.
+
     prior_vers - SUBMINOR
-        Changelog file (/changelog.txt) - ADDED
+        /changelog.txt - ADDED
             | The very file you're looking at!

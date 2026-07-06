@@ -1,0 +1,9 @@
+SENDSIG - DESCRIPTION
+    Sends a special request to a process.
+
+SENDSIG - NUMBER
+    8
+
+SENDSIG - ARGUMENTS
+    1 = The process to send the signal to.
+    2 = The signal that will be sent.

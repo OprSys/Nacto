@@ -1,0 +1,48 @@
+SYSCALL - DESCRIPTION
+    Invokes Nacto for API access and other primitive calls.
+
+SYSCALL - SYNTAX
+    SYSCALL
+
+SYSCALL - OPERANDS
+    SYSCALL has no operands.
+
+SYSCALL - POSSIBLE ERRORS
+    1;4 - CPU_INVIDX
+        File write index out of bounds.
+        File read index out of bounds.
+        Invalid file descriptor.
+    1;7 - CPU_OOB
+        LRAM high slot out of bounds.
+        LRAM low slot out of bounds.
+    2;1 - FS_NOPATH
+        File not found.
+    2;2 - FS_INVCDO
+        Cannot open a directory as a file.
+
+SYSCALL - GOTCHAS
+    1.
+        SYSCALL uses register 0 to specify what system action to invoke, and the rest (register 1 to 7) for parameters, not operands.
+
+SYSCALL - EXAMPLES
+    1.
+        - Print the character 'A'.
+        - Register 0 = system call number. 1 is SYSC_PRINT.
+        SETVAL 0 1
+        - Following registers are arguments for SYSCALL. Register 1 would specify the highslot in RAM, register 2 would specify the lowslot in RAM, to point to an ASCII value. Text in VINSTR is simply ASCII codes in RAM.
+        SETVAL 1 1
+        SETVAL 2 0
+        STORE 65 1 0
+        - Execute the system call, printing 'A'.
+        SYSCALL
+        HALT
+
+SYSCALL - SEE ALSO
+    /doc/documentation/vinstr/types/syscall-abi/SYSC_PRINT.txt
+    /doc/documentation/vinstr/types/syscall-abi/SYSC_READCHR.txt
+    /doc/documentation/vinstr/types/syscall-abi/SYSC_OPENFILE.txt
+    /doc/documentation/vinstr/types/syscall-abi/SYSC_CREATEFILE.txt
+    /doc/documentation/vinstr/types/syscall-abi/SYSC_WRITEFILE.txt
+    /doc/documentation/vinstr/types/syscall-abi/SYSC_READFILE.txt
+    /doc/documentation/vinstr/types/syscall-abi/SYSC_CLOSEFD.txt
+    /doc/documentation/vinstr/types/syscall-abi/SYSC_SENDSIG.txt

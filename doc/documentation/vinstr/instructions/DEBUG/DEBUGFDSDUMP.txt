@@ -1,0 +1,23 @@
+DEBUGFDSDUMP - DESCRIPTION
+    Debug instruction. Prints the file descriptors of the current process to stdout.
+
+DEBUGFDSDUMP - SYNTAX
+    DEBUGFDSDUMP
+
+DEBUGFDSDUMP - OPERANDS
+    DEBUGFDSDUMP does not have any operands.
+
+DEBUGFDSDUMP - POSSIBLE ERRORS
+    DEBUGFDSDUMP does not throw any errors.
+
+DEBUGFDSDUMP - GOTCHAS
+    DEBUGFDSDUMP has no gotchas.
+
+DEBUGFDSDUMP - EXAMPLES
+    No examples to show.
+
+DEBUGFDSDUMP - SEE ALSO
+    /doc/documentation/vinstr/instructions/DEBUG/DEBUGRAMDUMP.txt
+    /doc/documentation/vinstr/instructions/DEBUG/DEBUGPROCDUMP.txt
+    /doc/documentation/vinstr/instructions/DEBUG/DEBUGVFSDUMP.txt
+    /doc/documentation/vinstr/instructions/DEBUG/DEBUGVMREGDUMP.txt
