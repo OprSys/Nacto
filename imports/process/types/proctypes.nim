@@ -14,7 +14,7 @@ type
 
 type
     IsRunningState* = enum 
-        Running, Blocking, Terminated, NotStarted, PreRuntime
+        Running, WaitingForInput, WaitingForProcess, Terminated, NotStarted, PreRuntime
 
     OpenFileEntry* = ref object
         File*: NactoDisk.DiskTypes.File
@@ -32,6 +32,7 @@ type
         PendingSignals*: seq[Signal]
         Labels*: Table[string, Label]
         LRAM*: array[HIGH, array[LOW, int]]
+        WaitingFor*: int
 
     ProcessObject* = ref object
         Name*: string

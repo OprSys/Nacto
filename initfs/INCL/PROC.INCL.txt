@@ -1,0 +1,26 @@
+INCLUDE /INCL/MEM
+
+@PROC_SPAWN
+- Description: Executes a binary or executable, returning a PID for the spawned process.
+- Param x1: Highslot for path.
+- Return x0: The PID.
+SETVAL 1 x1
+SETVAL 6 x1
+GO MEM_AUTOLEN
+SETVAL 2 x6
+SETVAL 6 0
+SETVAL 1 x0
+SETVAL 0 9
+SETVAL 3 0
+SYSCALL
+RET
+@\
+
+@PROC_WAITPID
+- Description: Takes a PID and blocks the current program until the specified process terminates.
+- Param x1: The PID.
+SETVAL 0 10
+SETVAL 1 x1
+SYSCALL
+RET
+@\

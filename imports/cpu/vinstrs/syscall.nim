@@ -7,19 +7,28 @@ when defined(linux):
 import process/procapi as ProcApi
 import cpu/vinstr_registry
 
+# I/O
 const SYSC_PRINT* = 1
 const SYSC_READCHR* = 2
+
+# VFS
 const SYSC_OPENFILE* = 3
 const SYSC_CREATEFILE* = 4
 const SYSC_WRITEFILE* = 5
 const SYSC_READFILE* = 6
 const SYSC_CLOSEFD* = 7
+
+# Processes
 const SYSC_SENDSIG* = 8
+const SYSC_EXEC* = 9
+const SYSC_WAITPID* = 10
 
 import cpu/types/limits as LIMITS
 import cpu/types/ascii as ASCII
 import fs/fsapi as FsApi
 import hardware/disk as NactoDisk
+import process/executor as NactoExec
+import process/procapi as ProcApi
 
 import error/errorapi as ErrorApi
 import helper/hasstdin
@@ -53,7 +62,7 @@ proc PRINT(highslot: int, lowslot: int, procobj: ProcApi.ProcTypes.ProcessObject
 
 proc READCHR(highslot: int, lowslot: int, procobj: ProcApi.ProcTypes.ProcessObject): int =
     if not hasstdin():
-        procobj.ProcessState.Running = ProcApi.ProcTypes.IsRunningState.Blocking
+        procobj.ProcessState.Running = ProcApi.ProcTypes.IsRunningState.WaitingForInput
         return 0
     when defined(linux):
         var c: char
@@ -155,6 +164,41 @@ proc SENDSIG(pid: int, signal: int, procobj: ProcApi.ProcTypes.ProcessObject): i
     ProcApi.SendSignal(pid, signals[signal])
     return 0
 
+proc EXEC(len: int, highslot: int, pidto: int, procobj: ProcApi.ProcTypes.ProcessObject): int =
+    let path = LRAMGET(len, highslot, procobj)
+
+    let obj = FsApi.ResolvePath(path)
+    if obj == nil:
+        ErrorApi.ThrowError(ErrorApi.newerr(
+            "no such file or directory \"" & path & "\"",
+            ErrorApi.SysErr.ErrorSeverity.Error,
+            ErrorApi.ErrTypes.CATEGORY_FS,
+            ErrorApi.ErrTypes.FS_NOPATH
+        ))
+    elif not (obj of NactoDisk.DiskTypes.File):
+        ErrorApi.ThrowError(ErrorApi.newerr(
+            "requested CoreDataObject is not a file",
+            ErrorApi.SysErr.ErrorSeverity.Error,
+            ErrorApi.ErrTypes.CATEGORY_FS,
+            ErrorApi.ErrTypes.FS_INVCDO
+        ))
+
+
+
+    let pid = NactoExec.ExecuteBinaryAtPath(path)
+
+    discard vinstr_registry.lookup("SETVAL")(@[$pidto, $pid], procobj)
+    return 0
+
+proc WAITPID(pid: int, procobj: ProcApi.ProcTypes.ProcessObject): int =
+    if ProcApi.GetProcess(pid) == nil:
+        return 0
+    if pid == procobj.Id:
+        return 0
+    procobj.ProcessState.Running = ProcApi.ProcTypes.IsRunningState.WaitingForProcess
+    procobj.ProcessState.WaitingFor = pid
+    return 0
+
 proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int =
     let syscall_number = procobj.ProcessState.Vm[0]
     let arg1 = procobj.ProcessState.Vm[1]
@@ -179,6 +223,10 @@ proc execute*(args: seq[string], procobj: ProcApi.ProcTypes.ProcessObject): int 
         return CLOSEFD(arg1, procobj)
     of SYSC_SENDSIG:
         return SENDSIG(arg1, arg2, procobj)
+    of SYSC_EXEC:
+        return EXEC(arg1, arg2, arg3, procobj)
+    of SYSC_WAITPID:
+        return WAITPID(arg1, procobj)
     else:
         discard
     return 0

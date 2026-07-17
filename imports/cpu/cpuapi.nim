@@ -47,7 +47,7 @@ proc error(e: ref ErrorApi.SysErr.SysError, procobj: ProcApi.ProcTypes.ProcessOb
         waitforenter()
     elif e.Context.ErrSeverity == ErrorApi.SysErr.ErrorSeverity.Error:
         when constants.DEBUG_MODE:
-            procobj.ProcessState.Running = ProcApi.ProcTypes.IsRunningState.Blocking
+            procobj.ProcessState.Running = ProcApi.ProcTypes.IsRunningState.WaitingForInput
             echo("\nPress Enter to continue execution. However, please note that things may not go expected.")
             waitforenter()
             procobj.ProcessState.Running = ProcApi.ProcTypes.IsRunningState.Running
@@ -247,10 +247,3 @@ proc ProcessStep*(procobj: ProcApi.ProcTypes.ProcessObject): bool =
                 inc procobj.ProcessState.ProgramCounter
     
     return procobj.ProcessState.Running == ProcApi.ProcTypes.IsRunningState.Running
-
-proc ExecuteBinary*(name: string, origin: string, exe: string): int =
-    var process = ProcApi.CreateProcess(name, origin)
-    process.ProcessState.Running = ProcApi.ProcTypes.IsRunningState.NotStarted
-    process.ProcessState.RunningProcessString = exe.split('\n')
-    ProcApi.LinkProcess(process)
-    return process.Id

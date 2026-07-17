@@ -18,13 +18,13 @@ JNZ - GOTCHAS
         Note that JNZ uses the logic of JMP internally to jump. So, rules for JMP also applies to JNZ.
 
 JNZ - EXAMPLES
-    1.
-        - Simple countdown.
-        - Register 0 is the starting point.
+    1. Simple countdown. Register 0 counts down from 10 to 0. JNZ jumps back to SUB while register 0 is not zero.
+        @PRIOR
         SETVAL 0 10
         SUB 0 x0 1
-        JNZ 0 1
+        JNZ 0 -1
         HALT
+        @\
 
 JNZ - SEE ALSO
     N/A

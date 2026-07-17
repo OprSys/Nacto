@@ -14,7 +14,11 @@ DEBUGPROCDUMP - GOTCHAS
     DEBUGPROCDUMP has no gotchas.
 
 DEBUGPROCDUMP - EXAMPLES
-    No examples to show.
+    1. Dump the entire current process state.
+        @PRIOR
+        DEBUGPROCDUMP
+        HALT
+        @\
 
 DEBUGPROCDUMP - SEE ALSO
     /doc/documentation/vinstr/instructions/DEBUG/DEBUGRAMDUMP.txt

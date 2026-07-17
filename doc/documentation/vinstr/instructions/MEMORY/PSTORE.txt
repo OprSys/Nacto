@@ -21,10 +21,11 @@ PSTORE - GOTCHAS
         Note that LRAM slots are accessed as 0-indices.
 
 PSTORE - EXAMPLES
-    1.
-        - Set the LRAM slot LRAM[0][0] with 5.
+    1. Set the LRAM slot LRAM[0][0] with 5.
+        @PRIOR
         PSTORE 5 0 0
         HALT
+        @\
 
 PSTORE - SEE ALSO
     /doc/documentation/vinstr/instructions/MEMORY/LOAD.txt

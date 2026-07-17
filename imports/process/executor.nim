@@ -1,7 +1,7 @@
 import std/strutils
 import fs/fsapi as FsApi
 import hardware/disk as NactoDisk
-import cpu/cpuapi as CpuApi
+import process/procapi as ProcApi
 import cpu/types/ascii as Ascii
 
 type ExeMetadata* = object
@@ -13,12 +13,9 @@ type ExeMetadata* = object
 
 proc ParseExe*(data: string): ExeMetadata =
     result = ExeMetadata()
-    let fields = data.split(':')
+    let fields = data.split('\n')
     for fieldStr in fields:
-        let trimmed = fieldStr.strip()
-        if trimmed.len == 0:
-            continue
-        let parts = trimmed.splitWhitespace()
+        let parts = fieldStr.split(' ')
         if parts.len < 2:
             continue
         let fieldId = parseInt(parts[0])
@@ -40,20 +37,20 @@ proc ParseExe*(data: string): ExeMetadata =
         else:
             discard
 
-proc ExecuteBinaryAtPath*(path: string): void =
+proc ExecuteBinaryAtPath*(path: string): int =
     let obj = FsApi.ResolvePath(path)
     if obj == nil or not (obj of NactoDisk.DiskTypes.File):
-        return
+        return -1
     let file = cast[NactoDisk.DiskTypes.File](obj)
 
     if file.FileType == NactoDisk.DiskTypes.FT.FileTypes.Executable:
         let meta = ParseExe(file.Data)
         let binObj = FsApi.ResolvePath(meta.Path)
         if binObj == nil or not (binObj of NactoDisk.DiskTypes.File):
-            return
+            return -1
         let binFile = cast[NactoDisk.DiskTypes.File](binObj)
         if binFile.FileType != NactoDisk.DiskTypes.FT.FileTypes.Binary:
-            return
-        discard CpuApi.ExecuteBinary(meta.Name, meta.Path, binFile.Data)
+            return -1
+        return ProcApi.ExecuteBinary(meta.Name, meta.Path, binFile.Data)
     elif file.FileType == NactoDisk.DiskTypes.FT.FileTypes.Binary:
-        discard CpuApi.ExecuteBinary(file.Name, path, file.Data)
+        return ProcApi.ExecuteBinary(file.Name, path, file.Data)

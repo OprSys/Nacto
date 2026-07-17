@@ -14,7 +14,11 @@ DEBUGRAMDUMP - GOTCHAS
     DEBUGRAMDUMP has no gotchas.
 
 DEBUGRAMDUMP - EXAMPLES
-    No examples to show.
+    1. Dump the full RAM object.
+        @PRIOR
+        DEBUGRAMDUMP
+        HALT
+        @\
 
 DEBUGRAMDUMP - SEE ALSO
     /doc/documentation/vinstr/instructions/DEBUG/DEBUGPROCDUMP.txt

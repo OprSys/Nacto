@@ -15,17 +15,15 @@ RET - GOTCHAS
     RET has no gotchas.
 
 RET - EXAMPLES
-    1.
+    1. Call TESTNT via GO, execute its code, then return and halt.
         @PRIOR
         GO TESTNT
         HALT
         @\
 
-        @TESNT
+        @TESTNT
         DEBUGVMREGDUMP
-        - Return back to when `GO TESTNT` was called, then proceed to HALT (from PRIOR).
         RET
-        - Don't forget the '@\'
         @\
 
 RET - SEE ALSO

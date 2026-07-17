@@ -14,7 +14,11 @@ DEBUGVMREGDUMP - GOTCHAS
     DEBUGVMREGDUMP has no gotchas.
 
 DEBUGVMREGDUMP - EXAMPLES
-    No examples to show.
+    1. Dump the VM register array of the current process.
+        @PRIOR
+        DEBUGVMREGDUMP
+        HALT
+        @\
 
 DEBUGVMREGDUMP - SEE ALSO
     /doc/documentation/vinstr/instructions/DEBUG/DEBUGRAMDUMP.txt

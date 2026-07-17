@@ -1,4 +1,5 @@
 import std/tables
+import std/strutils
 
 import process/types/proctypes as ProcTypes
 export ProcTypes
@@ -8,7 +9,7 @@ var ProcessIndex*: Table[int, int] = initTable[int, int]()
 var nextpid: int = 1
 
 proc CreateProcess*(name: string, origin: string): ProcTypes.ProcessObject =
-    var procstate: ProcTypes.ProcessState = ProcTypes.ProcessState(ProgramCounter: 0, Running: ProcTypes.NotStarted, ReturnStack: @[])
+    var procstate: ProcTypes.ProcessState = ProcTypes.ProcessState(ProgramCounter: 0, Running: ProcTypes.NotStarted, ReturnStack: @[], WaitingFor: -1)
     var procobj: ProcTypes.ProcessObject = ProcTypes.ProcessObject(Name: name, PathOrigin: origin, Id: nextpid, ProcessState: procstate)
     inc nextpid
     return procobj
@@ -37,3 +38,10 @@ proc SendSignal*(id: int, signal: ProcTypes.Signal): void =
     var procobj = GetProcess(id)
     if procobj != nil:
         procobj.ProcessState.PendingSignals.add(signal)
+
+proc ExecuteBinary*(name: string, origin: string, exe: string): int =
+    var process = CreateProcess(name, origin)
+    process.ProcessState.Running = ProcTypes.IsRunningState.NotStarted
+    process.ProcessState.RunningProcessString = exe.split('\n')
+    LinkProcess(process)
+    return process.Id

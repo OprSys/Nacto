@@ -1,3 +1,5 @@
+INCLUDE /INCL/MEM
+
 @IO_PRINTCHAR
 - Description: Prints a single character.
 - Param x1: The ASCII code to print.
@@ -31,7 +33,7 @@ SETVAL 6 x2
 SETVAL 3 0
 GO IO_GETCHAR
 SETVAL 7 x0
-JEQ x6 0 +2
+JNZ x6 +3
 SETVAL 1 x7
 GO IO_PRINTCHAR
 JEQ x7 10 +4
@@ -46,11 +48,11 @@ RET
 @IO_PRINTSTR
 - Description: Prints a full string from a highslot in LRAM.
 - Param x1: The highslot to read from.
-- Param x2: How many characters to print.
 - Note: Modifies x3, incremented through the string, left at the end position on return. Tells the length of the string.
-SETVAL 3 0
 SETVAL 5 x1
-SETVAL 6 x2
+GO MEM_AUTOLEN
+SETVAL 6 x0
+SETVAL 3 0
 PLOAD 0 x5 x3
 SETVAL 7 x0
 SETVAL 1 x7

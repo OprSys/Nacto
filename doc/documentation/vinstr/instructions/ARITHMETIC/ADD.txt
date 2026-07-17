@@ -23,18 +23,18 @@ ADD - GOTCHAS
         Note that ADD uses the logic of SETVAL internally to set the register value. So, rules for SETVAL also applies to ADD.
 
 ADD - EXAMPLES
-    1.
-        - Add using literals, then store in register 0.
-        - Result is 10.
+    1. Add using literals, then store in register 0. Result is 10.
+        @PRIOR
         ADD 0 5 5
         HALT
-    2.
-        - Add using registers, then store in register 0.
-        - Result is 10.
+        @\
+    2. Add using registers, then store in register 0. Result is 10.
+        @PRIOR
         SETVAL 1 5
         SETVAL 2 5
         ADD 0 x1 x2
         HALT
+        @\
 
 ADD - SEE ALSO
     /doc/documentation/vinstr/instructions/ARITHMETIC/SETVAL.txt

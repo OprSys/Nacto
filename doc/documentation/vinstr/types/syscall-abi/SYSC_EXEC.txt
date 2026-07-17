@@ -1,0 +1,10 @@
+EXEC - DESCRIPTION
+    Executes a binary or executable, setting a register with a PID referring to the spawned process.
+
+EXEC - NUMBER
+    9
+
+EXEC - ARGUMENTS
+    x1 = Length of the path to execute.
+    x2 = Highslot to specify.
+    x3 = What register to store the PID.

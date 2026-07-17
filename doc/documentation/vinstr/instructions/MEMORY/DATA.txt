@@ -10,7 +10,7 @@ DATA - OPERANDS
     count to reg
         A register specifying where to put the count of how much values were written.
     [lowslots]...
-        Each lowslot to write to in the highslot.
+        Each lowslot value to write to in the highslot.
 
 DATA - POSSIBLE ERRORS
     1;7 - CPU_OOB
@@ -24,13 +24,16 @@ DATA - GOTCHAS
         For each value in lowslots, will map directly to LRAM lowslots. For example, `DATA 1 4 65 65 65` will set LRAM[1][0..2] to 65, also being 'A'.
 
 DATA - EXAMPLES
-    1.
-        - Print "Hello, World!".
+    1. Print "Hello, World!".
+        INCLUDE /INCL/IO
+
+        @PRIOR
         INCLUDE /INCL/IO
         DATA 0 3 72 101 108 108 111 44 32 87 111 114 108 100 33
-        ICALL IO_PRINTSTR HIGHSLOT:0 LENGTH:x3
+        SETVAL 1 0
+        GO IO_PRINTSTR
         HALT
+        @\
 
 DATA - SEE ALSO
     /doc/documentation/vinstr/instructions/DIRECTIVES/INCLUDE.txt
-    /doc/documentation/vinstr/instructions/DIRECTIVES/ICALL.txt

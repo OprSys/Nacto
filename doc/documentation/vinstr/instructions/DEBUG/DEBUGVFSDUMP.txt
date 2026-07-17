@@ -14,7 +14,11 @@ DEBUGVFSDUMP - GOTCHAS
     DEBUGVFSDUMP has no gotchas.
 
 DEBUGVFSDUMP - EXAMPLES
-    No examples to show.
+    1. Dump the entire virtual file system tree.
+        @PRIOR
+        DEBUGVFSDUMP
+        HALT
+        @\
 
 DEBUGVFSDUMP - SEE ALSO
     /doc/documentation/vinstr/instructions/DEBUG/DEBUGRAMDUMP.txt

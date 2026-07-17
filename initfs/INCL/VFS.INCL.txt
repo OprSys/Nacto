@@ -1,11 +1,14 @@
+INCLUDE /INCL/MEM
+
 @VFS_OPENFILE
 - Description: Opens an existing file and returns its file descriptor in x0.
 - Param x1: The highslot containing the path string.
-- Param x2: The length of the path string.
 - Return x0: The file descriptor number.
+SETVAL 7 x1
+GO MEM_AUTOLEN
+SETVAL 1 x0
+SETVAL 2 x7
 SETVAL 0 3
-SETVAL 1 x2
-SETVAL 2 x1
 SETVAL 3 0
 SYSCALL
 RET
@@ -14,13 +17,15 @@ RET
 @VFS_CREATEFILE
 - Description: Creates a file and returns its file descriptor in x0.
 - Param x1: The highslot containing the path string.
-- Param x2: The length of the path string.
-- Param x3: The file type number.
+- Param x2: The file type number.
 - Return x0: The file descriptor number.
+SETVAL 7 x1
+SETVAL 8 x2
+GO MEM_AUTOLEN
+SETVAL 1 x0
+SETVAL 2 x7
+SETVAL 3 x8
 SETVAL 0 4
-SETVAL 1 x2
-SETVAL 2 x1
-SETVAL 3 x3
 SETVAL 4 0
 SYSCALL
 RET
@@ -44,12 +49,12 @@ RET
 @VFS_WRITEFILESTR
 - Description: Writes a full string from a highslot to an open file.
 - Param x1: The highslot to read from.
-- Param x2: How many characters to write.
-- Param x3: The file descriptor to write to.
+- Param x2: The file descriptor to write to.
 - Modifies x8: Left at the length count after completion.
 SETVAL 5 x1
-SETVAL 6 x2
-SETVAL 7 x3
+SETVAL 7 x2
+GO MEM_AUTOLEN
+SETVAL 6 x0
 SETVAL 8 0
 SETVAL 1 x5
 SETVAL 2 x8

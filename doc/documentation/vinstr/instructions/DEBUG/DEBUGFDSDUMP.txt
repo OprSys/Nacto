@@ -14,7 +14,11 @@ DEBUGFDSDUMP - GOTCHAS
     DEBUGFDSDUMP has no gotchas.
 
 DEBUGFDSDUMP - EXAMPLES
-    No examples to show.
+    1. Dump the file descriptors of the current process.
+        @PRIOR
+        DEBUGFDSDUMP
+        HALT
+        @\
 
 DEBUGFDSDUMP - SEE ALSO
     /doc/documentation/vinstr/instructions/DEBUG/DEBUGRAMDUMP.txt

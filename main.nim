@@ -25,7 +25,7 @@ proc loadInitramfs(): bool =
         Nacto.FsApi.LoadRoot(Nacto.NactoDisk.get_root(), data)
         return true
 
-    let initDir = getAppDir() / "initramfs"
+    let initDir = getAppDir() / "initfs"
     if not dirExists(initDir):
         return false
 
@@ -78,6 +78,6 @@ when defined(linux):
     discard tcgetattr(0, addr(term))
     term.c_lflag = term.c_lflag and not (ECHO or ICANON)
     discard tcsetattr(0, TCSANOW, addr(term))
-Nacto.NactoExec.ExecuteBinaryAtPath("/BOOT/BOOTMASTERINIT")
-##Nacto.NactoExec.ExecuteBinaryAtPath("/BIN/LOWOUPS")
+discard Nacto.NactoExec.ExecuteBinaryAtPath("/BOOT/BOOTMASTERINIT")
+##discard Nacto.NactoExec.ExecuteBinaryAtPath("/BIN/LOWOUPS")
 Nacto.NactoSced.RunScheduler()

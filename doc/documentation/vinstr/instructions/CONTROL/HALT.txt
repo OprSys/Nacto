@@ -14,23 +14,25 @@ HALT - GOTCHAS
     HALT has no gotchas.
 
 HALT - EXAMPLES
-    1.
-        - Unconditional VINSTR program.
+    1. Unconditional program. Computes a value and halts.
+        @PRIOR
         SETVAL 0 5
         ADD 0 x0 5
         SUB 0 x0 2
-        - This instruction is REQUIRED for VINSTR. Without it, you would get an error.
         HALT
-    2.
-        - Conditional VINSTR program.
-        - Register 0 is the flag.
-        SETVAL 0 1
-        JZ 0 5
+        @\
+    2. Conditional program. Register 0 is the flag. Since register 0 is 0, JZ triggers and skips the debug dump.
+        @PRIOR
+        SETVAL 0 0
+        JZ 0 +2
         DEBUGRAMDUMP
         HALT
-        -
+        @\
+    3. Debug dump then halt.
+        @PRIOR
         DEBUGPROCDUMP
         HALT
+        @\
 
 HALT - SEE ALSO
     /doc/documentation/vinstr/instructions/CONTROL/JZ.txt

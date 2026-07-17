@@ -1,0 +1,8 @@
+WAITPID - DESCRIPTION
+    Halts the current program and waits for a specified one to terminate before continuing.
+
+WAITPID - NUMBER
+    10
+
+WAITPID - ARGUMENTS
+    x1 = The PID to wait for.

@@ -18,7 +18,20 @@ JZ - GOTCHAS
         Note that JZ uses the logic of JMP internally to jump. So, rules for JMP also applies to JZ.
 
 JZ - EXAMPLES
-    No examples to show.
+    1. If register 0 is zero, skip the debug dump.
+        @PRIOR
+        SETVAL 0 0
+        JZ 0 +2
+        DEBUGRAMDUMP
+        HALT
+        @\
+    2. If register 0 is not zero, JZ does not trigger and falls through.
+        @PRIOR
+        SETVAL 0 1
+        JZ 0 +2
+        DEBUGRAMDUMP
+        HALT
+        @\
 
 JZ - SEE ALSO
     N/A

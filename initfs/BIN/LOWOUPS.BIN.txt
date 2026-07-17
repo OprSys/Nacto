@@ -1,0 +1,17 @@
+INCLUDE /INCL/IO
+INCLUDE /INCL/MEM
+
+@PRIOR
+GO MAIN
+HALT
+@\
+
+@MAIN
+- This is LOWOUPS. This is the primary testing program, that usually prints "LOWO UPS." It has no meaning. It's simply just characters.
+- Usually used for testing VINSTR syntax and/or VINSTR features.
+DATA 1 4 76 79 87 79 32 85 80 83 10
+SETVAL 1 1
+GO IO_PRINTSTR
+GO MEM_CLEARVM
+RET
+@\

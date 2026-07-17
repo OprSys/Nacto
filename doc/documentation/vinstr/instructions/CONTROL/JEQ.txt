@@ -20,7 +20,18 @@ JEQ - GOTCHAS
         Note that JEQ uses the logic of JMP internally to jump. So, rules for JMP also applies to JEQ.
 
 JEQ - EXAMPLES
-    No examples to show.
+    1. Compare two equal values. JEQ triggers, jumping over the debug dump.
+        @PRIOR
+        JEQ 5 5 +2
+        DEBUGVMREGDUMP
+        HALT
+        @\
+    2. Compare two unequal values. JEQ does not trigger, falls through.
+        @PRIOR
+        JEQ 5 6 +2
+        DEBUGVMREGDUMP
+        HALT
+        @\
 
 JEQ - SEE ALSO
     N/A

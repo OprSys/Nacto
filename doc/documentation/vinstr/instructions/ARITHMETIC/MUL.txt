@@ -23,18 +23,18 @@ MUL - GOTCHAS
         Note that MUL uses the logic of SETVAL internally to set the register value. So, rules for SETVAL also applies to MUL.
 
 MUL - EXAMPLES
-    1.
-        - Multiply using literals, then store in register 0.
-        - Result is 100.
+    1. Multiply using literals, then store in register 0. Result is 100.
+        @PRIOR
         MUL 0 10 10
         HALT
-    2.
-        - Multiply using registers, then store in register 0.
-        - Result is 100.
+        @\
+    2. Multiply using registers, then store in register 0. Result is 100.
+        @PRIOR
         SETVAL 1 10
         SETVAL 2 10
         MUL 0 x1 x2
         HALT
+        @\
 
 MUL - SEE ALSO
     /doc/documentation/vinstr/instructions/ARITHMETIC/SETVAL.txt

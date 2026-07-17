@@ -19,17 +19,15 @@ GO - GOTCHAS
         Bad: GO @MAIN
 
 GO - EXAMPLES
-    1.
-        - Go to TEST label.
-        - Result is TEST's positon.
-        @TEST
-        DEBUGVMREGDUMP
-        RET
-        @\
-
+    1. Go to TEST label, then return and halt.
         @PRIOR
         GO TEST
         HALT
+        @\
+
+        @TEST
+        DEBUGVMREGDUMP
+        RET
         @\
 
 GO - SEE ALSO

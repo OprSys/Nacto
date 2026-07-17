@@ -21,10 +21,11 @@ STORE - GOTCHAS
         Note that RAM slots are accessed as 0-indices.
 
 STORE - EXAMPLES
-    1.
-        - Set the RAM slot RAM[0][0] with 5.
+    1. Set the RAM slot RAM[0][0] with 5.
+        @PRIOR
         STORE 5 0 0
         HALT
+        @\
 
 STORE - SEE ALSO
     /doc/documentation/vinstr/instructions/MEMORY/LOAD.txt
