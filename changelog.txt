@@ -9,7 +9,7 @@ Flags
         MAJOR: This update has introduced changes that add/remove/alter important/general APIs and/or VINSTR programs and/or documentation.
         SUBMAJOR: This update has introduced changes that add/remove/alter general APIs and/or VINSTR programs and/or documentatino.
         MINOR: This update has introduced changes that alter general/minor APIs and/or VINSTR programs and/or documentation.
-        SUBMINOR: This update has introduced very minimal changes. Usually doesn't touch source files.
+        SUBMINOR: This update has introduced very minimal changes. Usually doesn't touch Nim source.
         BUGFIX: This update has fixed unexpected behavior.
 
     Update entry types
@@ -18,8 +18,7 @@ Flags
         ALTERED: This has been changed.
 
 Overall
-    The ABI is becoming more mature. An overhaul on how `root` is stored (i.e., partitions), and a user system, is planned.
-    Also expect more documentation.
+    Update: no, I'm not dead. Yes, it's been a month since last commit. I've simply lacked motivation. Nacto is in the works currently as of now, however.
 
 Changelog
     Every update, ranging from the present to 10 updates ago. Highest is newer.
